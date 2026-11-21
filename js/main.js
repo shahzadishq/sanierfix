@@ -400,6 +400,12 @@
       },
     });
 
+    // Hide the phone call/enquiry bar while the contact form itself is on screen
+    ScrollTrigger.create({
+      trigger: '#kontakt', start: 'top 80%', end: 'bottom top',
+      onToggle: (self) => root.classList.toggle('at-contact', self.isActive),
+    });
+
     const setMenu = (open) => {
       root.classList.toggle('menu-open', open);
       toggle.setAttribute('aria-expanded', String(open));
