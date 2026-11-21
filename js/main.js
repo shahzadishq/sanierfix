@@ -5,9 +5,7 @@
 (() => {
   'use strict';
 
-  const FRAME_COUNT = 302;              // frames per set in assets/frames/{lg,md,sm}
-  const FRAME_PATH = (set, i) => `assets/frames/${set}/${String(i + 1).padStart(4, '0')}.webp`;
-  const MAX_PARALLEL = 6;
+  const FRAME_COUNT = 302;              // frames in the source film (30 fps)
   const SEG = 10;                       // timeline units per step
 
   const root = document.documentElement;
@@ -16,13 +14,13 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isNarrow = () => innerWidth <= 860;
 
-  if (!window.gsap || !window.ScrollTrigger) {
+  if (!window.gsap || !window.ScrollTrigger || !window.Observer || !window.ScrollToPlugin) {
     root.classList.remove('js');
     root.classList.add('no-anim');
     return;
   }
 
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollToPlugin);
   ScrollTrigger.config({ ignoreMobileResize: true });
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   scrollTo(0, 0);
@@ -56,128 +54,55 @@
   }
 
   /* ==========================================================================
-     FILM — image-sequence renderer
+     FILM — all-intra MP4, fully pre-downloaded, seeked by scroll (hardware decoded)
      ========================================================================== */
   const filmEl = $('.film');
   const stage = $('[data-film]');
-  const canvas = $('[data-film-canvas]');
-  const ctx = canvas.getContext('2d', { alpha: false });
+  const video = $('[data-film-video]');
   const hudBuffer = $('[data-buffer]');
   const hudStep = $('[data-step-num]');
   const rail = $('[data-rail]');
   const progressBar = $('[data-progress]');
   const chapters = $$('[data-chapter]');
 
-  // Rest frames: the film always comes to a stop on a complete scene.
+  // Rest frames: each scroll gesture travels to the next complete scene and stops.
   const STEPS = [0, ...chapters.map((c) => Math.min(FRAME_COUNT - 1, Number(c.dataset.frame)))];
   const STEP_COUNT = STEPS.length - 1;
   $('[data-step-total]').textContent = String(STEP_COUNT).padStart(2, '0');
 
-  const images = new Array(FRAME_COUNT);
-  const imageSet = new Array(FRAME_COUNT);
-  const loaded = new Uint8Array(FRAME_COUNT);
   const state = { frame: 0 };
-  let currentSet = null;
-  let loadToken = 0;
-  let drawnIndex = -1;
-  let drawnSet = null;
-  let rafPending = false;
-  let forceNext = false;
   let filmST = null;
+  let duration = FRAME_COUNT / 30;
+  let cur = 0, inflight = false;
 
-  function pickSet() {
-    const w = innerWidth, h = innerHeight;
-    if (h > w * 1.1) return 'sm';          // portrait phones & tablets — native-res 2:3 crop
-    return w >= 1000 ? 'lg' : 'md';         // laptops/desktops always get full 1920px frames
+  const pickSrc = () => (innerHeight > innerWidth * 1.1 ? 'assets/video/film-portrait.mp4' : 'assets/video/film-1080.mp4');
+  let currentSrc = pickSrc();
+
+  video.addEventListener('loadedmetadata', () => { if (isFinite(video.duration)) duration = video.duration; });
+  video.addEventListener('seeked', () => { inflight = false; filmEl.classList.add('is-ready'); });
+  video.addEventListener('loadeddata', () => { prime(); filmEl.classList.add('is-ready'); });
+
+  // A quick play/pause unlocks seeking on iOS/Safari; the film never plays on its own.
+  let primed = false;
+  function prime() {
+    if (primed) return; primed = true;
+    const stop = () => { try { video.pause(); } catch (e) {} };
+    try { const pr = video.play(); if (pr && pr.then) pr.then(() => setTimeout(stop, 60)).catch(stop); else setTimeout(stop, 60); } catch (e) { stop(); }
+    setTimeout(stop, 300);
   }
 
-  // Rest frames first (so every stop is crisp immediately), then coarse → fine.
-  function buildOrder() {
-    const order = [], seen = new Uint8Array(FRAME_COUNT);
-    const push = (i) => { if (i >= 0 && i < FRAME_COUNT && !seen[i]) { seen[i] = 1; order.push(i); } };
-    STEPS.forEach(push);
-    [16, 8, 4, 2, 1].forEach((step) => { for (let i = 0; i < FRAME_COUNT; i += step) push(i); });
-    return order;
-  }
-
-  function loadSet(set, onFirstPass, onProgress) {
-    const token = ++loadToken;
-    const order = buildOrder();
-    const firstPass = STEPS.length + Math.ceil(FRAME_COUNT / 16);
-    let cursor = 0, active = 0, done = 0, firstDone = 0, fired = false;
-
-    const pump = () => {
-      if (token !== loadToken) return;
-      while (active < MAX_PARALLEL && cursor < order.length) {
-        const pos = cursor++;
-        const i = order[pos];
-        const img = new Image();
-        img.decoding = 'async';
-        img.src = FRAME_PATH(set, i);
-        active++;
-        const finish = (ok) => {
-          active--;
-          if (token !== loadToken) return;
-          if (ok) { images[i] = img; imageSet[i] = set; loaded[i] = 1; }
-          done++;
-          if (pos < firstPass) firstDone++;
-          if (!fired && firstDone >= Math.min(firstPass, order.length)) { fired = true; onFirstPass && onFirstPass(); }
-          onProgress && onProgress(done / order.length, Math.min(1, firstDone / firstPass));
-          if (ok && Math.abs(i - state.frame) < 30) requestRender(true);
-          pump();
-        };
-        const decoded = img.decode ? img.decode() : new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
-        decoded.then(() => finish(true), () => finish(false));
-      }
-    };
-    pump();
-  }
-
-  function nearestLoaded(i) {
-    if (loaded[i]) return i;
-    for (let d = 1; d < FRAME_COUNT; d++) {
-      const a = i - d, b = i + d;
-      if (a >= 0 && loaded[a]) return a;
-      if (b < FRAME_COUNT && loaded[b]) return b;
+  // Scrub loop: ease towards the target time, one seek at a time.
+  (function loop() {
+    const target = (state.frame / (FRAME_COUNT - 1)) * duration;
+    cur += (target - cur) * (reduceMotion ? 1 : 0.32);
+    if (Math.abs(target - cur) < 0.002) cur = target;
+    if (!video.paused && primed) { try { video.pause(); } catch (e) {} }
+    if (!inflight && video.readyState >= 2 && Math.abs(cur - video.currentTime) > 0.008) {
+      inflight = true;
+      try { video.currentTime = Math.min(duration - 0.001, Math.max(0, cur)); } catch (e) { inflight = false; }
     }
-    return -1;
-  }
-
-  function sizeCanvas() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    const r = stage.getBoundingClientRect();
-    const w = Math.max(1, Math.round(r.width * dpr));
-    const h = Math.max(1, Math.round(r.height * dpr));
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w; canvas.height = h;
-      drawnIndex = -1;
-    }
-  }
-
-  function draw(force) {
-    rafPending = false;
-    const target = Math.round(state.frame);
-    const i = nearestLoaded(target);
-    if (i < 0) return;
-    if (!force && i === drawnIndex && imageSet[i] === drawnSet) return;
-    const img = images[i];
-    const cw = canvas.width, ch = canvas.height;
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    const s = Math.max(cw / iw, ch / ih);
-    const dw = iw * s, dh = ih * s;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-    drawnIndex = i; drawnSet = imageSet[i];
-    filmEl.classList.add('is-ready');
-  }
-
-  function requestRender(force) {
-    if (force) forceNext = true;
-    if (rafPending) return;
-    rafPending = true;
-    requestAnimationFrame(() => { const f = forceNext; forceNext = false; draw(f); });
-  }
+    requestAnimationFrame(loop);
+  })();
 
   /* ---------- Chapter rail (clickable) ---------- */
   chapters.forEach((c, n) => {
@@ -203,13 +128,83 @@
     }
   }
 
+  /* ---------- Step navigation: one gesture = one complete scene ---------- */
+  let stepIndex = 0;
+  let animating = false;
+  let observer = null;
+  const stepY = (n) => filmST.start + (filmST.end - filmST.start) * (n / STEP_COUNT);
+
   function goToStep(n) {
     if (!filmST) return;
-    const y = filmST.start + (filmST.end - filmST.start) * (n / STEP_COUNT);
-    window.scrollTo({ top: Math.round(y) + 1, behavior: reduceMotion ? 'auto' : 'smooth' });
+    n = Math.max(0, Math.min(STEP_COUNT, n));
+    stepIndex = n;
+    animating = true;
+    const dist = Math.abs(scrollY - stepY(n)) / Math.max(1, innerHeight);
+    gsap.to(window, {
+      scrollTo: { y: stepY(n), autoKill: false },
+      duration: reduceMotion ? 0 : Math.min(1.6, 0.9 + dist * 0.25),
+      ease: 'power2.inOut',
+      overwrite: true,
+      onComplete: () => setTimeout(() => { animating = false; }, 260),
+    });
   }
 
-  /* ---------- Film timeline: one segment per step, snapping between rests ---------- */
+  function leaveFilm(dir) {
+    observer && observer.disable();
+    animating = true;
+    const y = dir > 0 ? filmST.end + 2 : 0;
+    gsap.to(window, { scrollTo: { y, autoKill: false }, duration: 0.5, ease: 'power2.out', overwrite: true,
+      onComplete: () => setTimeout(() => { animating = false; }, 200) });
+  }
+
+  function step(dir) {
+    if (animating) return;
+    if (dir > 0 && stepIndex >= STEP_COUNT) return leaveFilm(1);
+    if (dir < 0 && stepIndex <= 0) return;
+    goToStep(stepIndex + dir);
+  }
+
+  function initStepper() {
+    observer = Observer.create({
+      target: window,
+      type: 'wheel,touch',
+      preventDefault: true,
+      tolerance: 12,
+      wheelSpeed: 1,
+      onChangeY: (self) => {
+        const isTouch = self.event && self.event.type && self.event.type.indexOf('touch') === 0;
+        const dy = isTouch ? -self.deltaY : self.deltaY;
+        if (Math.abs(dy) < 2) return;
+        step(dy > 0 ? 1 : -1);
+      },
+    });
+    observer.disable();
+
+    const inFilm = () => scrollY >= filmST.start - 2 && scrollY <= filmST.end - 2;
+    const enable = () => {
+      if (observer.isEnabled) return;
+      stepIndex = Math.round(Math.max(0, Math.min(1, (scrollY - filmST.start) / (filmST.end - filmST.start))) * STEP_COUNT);
+      observer.enable();
+      if (Math.abs(scrollY - stepY(stepIndex)) > 4) goToStep(stepIndex);
+    };
+    ScrollTrigger.create({
+      trigger: filmEl, start: () => filmST.start, end: () => filmST.end - 2,
+      onEnter: enable, onEnterBack: enable,
+      onLeave: () => { if (!animating) observer.disable(); },
+    });
+    if (inFilm()) enable();
+
+    addEventListener('keydown', (e) => {
+      if (!observer.isEnabled) return;
+      const next = ['ArrowDown', 'PageDown', ' ', 'Spacebar'].includes(e.key);
+      const prev = ['ArrowUp', 'PageUp'].includes(e.key);
+      if (!next && !prev) return;
+      e.preventDefault();
+      step(next ? 1 : -1);
+    });
+  }
+
+  /* ---------- Film timeline: one segment per step (scrubbed directly by scroll) ---------- */
   function buildFilm() {
     const introWords = splitWords($('.film__intro .display'));
     const introSide = $$('.film__intro .script, .film__lead, .film__cue');
@@ -219,41 +214,30 @@
       scrollTrigger: {
         trigger: filmEl,
         start: 'top top',
-        end: () => '+=' + Math.round(innerHeight * STEP_COUNT * (isNarrow() ? 0.85 : 1)),
+        end: () => '+=' + Math.round(innerHeight * STEP_COUNT),
         pin: stage,
-        scrub: 0.5,
+        scrub: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        snap: {
-          snapTo: 1 / STEP_COUNT,   // every rest frame
-          directional: true,        // a small scroll moves to the next/previous complete scene
-          delay: 0.04,
-          duration: { min: 0.45, max: 1.1 },
-          ease: 'power2.inOut',
-          inertia: false,
-        },
         onUpdate: (self) => updateHud(self.progress),
       },
     });
     filmST = tl.scrollTrigger;
 
-    // Frames: each segment plays exactly from one complete scene to the next.
     for (let i = 0; i < STEP_COUNT; i++) {
-      tl.to(state, { frame: STEPS[i + 1], duration: SEG, onUpdate: requestRender }, i * SEG);
+      tl.to(state, { frame: STEPS[i + 1], duration: SEG }, i * SEG);
     }
 
-    // Intro leaves during the first segment
     tl.to(introSide, { autoAlpha: 0, y: -24, duration: 3 }, 0)
       .to(introWords, { yPercent: -115, stagger: 0.3, duration: 3.6, ease: 'power2.in' }, 0.2);
 
-    // Each chapter is fully visible exactly at its rest point (k * SEG)
     chapters.forEach((ch, n) => {
       const k = n + 1;
       const rest = k * SEG;
       const isLast = k === STEP_COUNT;
       const words = splitWords($('.chapter__title', ch));
       const side = $$('.chapter__num, .chapter__body, .chapter__actions', ch);
-      const tIn = rest - 4.8;
+      const tIn = rest - 4.6;
 
       tl.fromTo(ch, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tIn)
         .fromTo(words, { yPercent: 115 }, { yPercent: 0, stagger: 0.25, duration: 3, ease: 'power3.out' }, tIn)
@@ -272,7 +256,7 @@
   }
 
   /* ==========================================================================
-     Preloader → entrance
+     Preloader: download the whole film first (so every seek is instant)
      ========================================================================== */
   const loaderCount = $('[data-loader-count]');
   const loaderBar = $('[data-loader-bar]');
@@ -280,18 +264,43 @@
   let started = false;
 
   function setLoader(p) {
-    shown = Math.max(shown, Math.round(p * 100));
+    shown = Math.max(shown, Math.min(100, Math.round(p * 100)));
     loaderCount.textContent = shown;
     loaderBar.style.transform = `scaleX(${shown / 100})`;
+  }
+
+  function loadFilm(src, onDone) {
+    fetch(src).then((r) => {
+      if (!r.ok || !r.body) throw new Error('stream');
+      const total = +(r.headers.get('content-length') || 0);
+      let got = 0; const chunks = []; const rd = r.body.getReader();
+      const pump = () => rd.read().then((x) => {
+        if (x.done) return new Blob(chunks, { type: 'video/mp4' });
+        chunks.push(x.value); got += x.value.length;
+        if (total) { const p = got / total; if (!started) setLoader(p * 0.97); hudBuffer.textContent = `Film lädt ${Math.round(p * 100)}%`; }
+        return pump();
+      });
+      return pump();
+    }).then((blob) => {
+      if (src !== currentSrc) return;
+      const t = video.currentTime || 0;
+      video.src = URL.createObjectURL(blob);
+      video.load();
+      video.addEventListener('loadeddata', () => { try { video.currentTime = t; } catch (e) {} }, { once: true });
+      hudBuffer.classList.add('is-done');
+      onDone && onDone();
+    }).catch(() => {
+      // Fallback: stream directly (range requests still allow seeking)
+      video.src = src; video.preload = 'auto'; video.load();
+      hudBuffer.classList.add('is-done');
+      onDone && onDone();
+    });
   }
 
   function start() {
     if (started) return;
     started = true;
     setLoader(1);
-    sizeCanvas();
-    draw(true);
-
     const introWords = splitWords($('.film__intro .display'));
     const introSide = $$('.film__intro .script, .film__lead, .film__cue');
 
@@ -311,21 +320,16 @@
       .from('.nav', { autoAlpha: 0, y: -16, duration: 1, ease: 'power3.out' }, '-=1');
   }
 
-  const bufferText = (all) => {
-    if (all >= 1) hudBuffer.classList.add('is-done');
-    else { hudBuffer.classList.remove('is-done'); hudBuffer.textContent = `Film lädt ${Math.round(all * 100)}%`; }
-  };
-
-  currentSet = pickSet();
-  loadSet(
-    currentSet,
-    () => {
-      const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-      Promise.race([fonts, new Promise((r) => setTimeout(r, 1500))]).then(start);
-    },
-    (all, first) => { if (!started) setLoader(first * 0.98); bufferText(all); }
-  );
-  setTimeout(start, 10000);   // never trap visitors on very slow connections
+  loadFilm(currentSrc, () => {
+    const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    Promise.race([fonts, new Promise((r) => setTimeout(r, 1200))]).then(start);
+  });
+  // On slow connections, open the site after a while and stream the film meanwhile.
+  setTimeout(() => {
+    if (started) return;
+    if (!video.src) { video.src = currentSrc; video.preload = 'auto'; video.load(); }
+    start();
+  }, 12000);
 
   /* ==========================================================================
      Page
@@ -343,20 +347,15 @@
     initForm();
     initNav();             // last: all pins exist, so positions are correct
     ScrollTrigger.refresh();
-    requestRender(true);
+    initStepper();
 
     let resizeTimer;
     addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        sizeCanvas();
-        requestRender(true);
-        const next = pickSet();
-        if (next !== currentSet) {
-          currentSet = next;
-          loadSet(next, null, bufferText);
-        }
-      }, 180);
+        const next = pickSrc();
+        if (next !== currentSrc) { currentSrc = next; loadFilm(next); }
+      }, 250);
     });
   }
 
@@ -427,6 +426,10 @@
     ScrollTrigger.batch('[data-reveal]', {
       start: 'top 90%', once: true,
       onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08, ease: 'power3.out', overwrite: true }),
+    });
+    gsap.fromTo('[data-band-img]', { scale: 1.12 }, {
+      scale: 1, ease: 'none',
+      scrollTrigger: { trigger: '[data-band]', start: 'top bottom', end: 'bottom top', scrub: true },
     });
     $$('[data-parallax]').forEach((im) => {
       gsap.fromTo(im, { yPercent: -18 }, {

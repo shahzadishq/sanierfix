@@ -21,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Yellowtail&display=swap" rel="stylesheet">
 
   <link rel="preload" as="image" href="assets/img/poster.jpg">
-  <link rel="stylesheet" href="css/style.css?v=246486">
+  <link rel="stylesheet" href="css/style.css?v=247080">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -84,7 +84,7 @@
       <span id="top"></span>
       <div class="film__stage" data-film>
         <div class="film__frame">
-          <canvas class="film__canvas" data-film-canvas aria-hidden="true"></canvas>
+          <video class="film__video" data-film-video muted playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
           <img class="film__poster" src="assets/img/poster.jpg" alt="">
           <div class="film__shade"></div>
         </div>
@@ -168,7 +168,7 @@
       </div>
 
       <figure class="band" data-band>
-        <img src="https://sanier-fix.com/wp-content/uploads/2025/09/DSC02473_B_mitLogo_BANNER-RESTLICHEN-SEITEN-FIX-scaled-1.jpg" alt="Das Sanier-Fix-Team vor einem Bagger auf der Baustelle" loading="lazy" data-parallax>
+        <img src="https://sanier-fix.com/wp-content/uploads/2025/09/DSC02473_B_mitLogo_BANNER-RESTLICHEN-SEITEN-FIX-scaled-1.jpg" alt="Das Sanier-Fix-Team vor einem Bagger auf der Baustelle" loading="lazy" data-band-img>
         <figcaption class="container"><span class="script script--light">Das Team hinter Sanier Fix</span></figcaption>
       </figure>
     </section>
@@ -453,6 +453,8 @@
   <noscript><style>.loader{display:none}</style></noscript>
   <script src="js/vendor/gsap.min.js?v=3.15.1" defer></script>
   <script src="js/vendor/ScrollTrigger.min.js?v=3.15.1" defer></script>
-  <script src="js/main.js?v=246486" defer></script>
+  <script src="js/vendor/Observer.min.js?v=3.15.1" defer></script>
+  <script src="js/vendor/ScrollToPlugin.min.js?v=3.15.1" defer></script>
+  <script src="js/main.js?v=247080" defer></script>
 </body>
 </html>
