@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Sanier Fix — V2: portrait (9:16) film presented on desktop
+   Landscape screens: the film sits in a tall rounded frame on the right, over a
+   blurred, living backdrop of the same frame. Portrait screens: full-bleed.
+   ========================================================================== */
+
+.film__ambient { display: none; }
+
+@media (orientation: landscape) {
+  .film__frame { background: var(--navy-deep); }
+
+  .film__ambient {
+    display: block; position: absolute; inset: -8%; width: 116%; height: 116%;
+    filter: blur(42px) saturate(1.15); opacity: .55; transform: translateZ(0);
+  }
+
+  .film__shade {
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgba(0,22,52,.92) 0%, rgba(0,22,52,.7) 36%, rgba(0,22,52,.22) 68%, rgba(0,22,52,.4) 100%),
+      linear-gradient(180deg, rgba(0,22,52,.5) 0%, rgba(0,22,52,0) 22%);
+  }
+
+  .film__video, .film__poster {
+    z-index: 2;
+    inset: auto;
+    top: calc(50% + 34px);
+    right: calc(var(--pad) + 190px);
+    height: min(calc(100svh - 150px), 960px);
+    width: auto;
+    aspect-ratio: 9 / 16;
+    transform: translateY(-50%);
+    border-radius: 22px;
+    object-fit: cover;
+    box-shadow: 0 50px 100px -30px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.12);
+    background: var(--navy);
+  }
+
+  /* text column on the left, clear of the frame */
+  .chapter--left, .chapter--final { left: var(--pad); right: auto; bottom: auto; top: 50%; transform: translateY(-40%); max-width: min(38rem, 44vw); text-align: left; }
+  .chapter--final .chapter__actions { justify-content: flex-start; }
+  .chapter__title { font-size: clamp(36px, 4.2vw, 76px); }
+  .chapter__title--xl { font-size: clamp(46px, 5.6vw, 104px); }
+  .film__intro { padding-right: calc(var(--pad) + 190px + min(calc((100svh - 150px) * 9 / 16), 540px) + 40px); }
+  .film__intro .display { font-size: clamp(46px, 6.4vw, 118px); }
+}
+
+@media (orientation: landscape) and (max-width: 1180px) {
+  .film__video, .film__poster { right: var(--pad); }
+  .film__intro { padding-right: calc(var(--pad) + min(calc((100svh - 150px) * 9 / 16), 540px) + 32px); }
+  .chapter--left, .chapter--final { max-width: min(30rem, 46vw); }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  /* phones held sideways */
+  .film__video, .film__poster { top: calc(50% + 20px); height: calc(100svh - 90px); border-radius: 14px; }
+  .chapter__body, .film__lead, .film__cue, .film__intro .script { display: none; }
+  .chapter__title, .chapter__title--xl { font-size: clamp(26px, 4.4vw, 40px); }
+  .film__intro .display { font-size: clamp(34px, 6vw, 56px); }
+  .chapter--left, .chapter--final { transform: translateY(-50%); }
+}
+
+.chapter--final .chapter__actions { pointer-events: auto; display: flex; gap: 28px; align-items: center; flex-wrap: wrap; margin-top: 34px; }
+@media (orientation: landscape) {
+  .film__ambient { opacity: .85; }
+}

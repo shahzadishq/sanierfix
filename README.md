@@ -52,3 +52,10 @@ If the frame count changes, update `FRAME_COUNT` in `js/main.js`. Each chapter's
 
 - **Contact form:** by default it opens the visitor's email app addressed to info@sanier-fix.com. To receive submissions directly, add `data-endpoint="https://formspree.io/f/your-id"` (or similar) to the `<form>`.
 - Images are hotlinked from sanier-fix.com — if media files there are renamed or deleted, update the URLs in `index.html`.
+
+## V2 (portrait film) — `/v2/`
+
+A second version of the homepage built around the vertical film *Modern Home Transformation* (2160×3840, 453 frames).
+On landscape screens the film is shown in a tall rounded frame on the right over a blurred live backdrop; on phones it plays full-screen.
+Seven scenes stop at frames 48, 110, 180, 266, 310, 348 and 452 (`data-frame` in `v2/index.html`).
+Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`), `v2/main-v2.js`, `v2/assets/video/film-{preview,hd}.mp4`.
