@@ -160,13 +160,15 @@
     n = Math.max(0, Math.min(STEP_COUNT, n));
     stepIndex = n;
     animating = true;
-    const dist = Math.abs(scrollY - stepY(n)) / Math.max(1, innerHeight);
+    // Unhurried, cinematic travel: longer scenes take a little longer (≈1.7–2.4 s per step)
+    const from = Math.round(Math.max(0, Math.min(1, (scrollY - filmST.start) / (filmST.end - filmST.start))) * STEP_COUNT);
+    const frames = Math.abs(STEPS[n] - STEPS[Math.max(0, Math.min(STEP_COUNT, from))]);
     gsap.to(window, {
       scrollTo: { y: stepY(n), autoKill: false },
-      duration: reduceMotion ? 0 : Math.min(1.6, 0.9 + dist * 0.25),
-      ease: 'power2.inOut',
+      duration: reduceMotion ? 0 : Math.min(2.8, 1.1 + frames * 0.019),
+      ease: 'power1.inOut',
       overwrite: true,
-      onComplete: () => setTimeout(() => { animating = false; }, 260),
+      onComplete: () => setTimeout(() => { animating = false; }, 350),
     });
   }
 
