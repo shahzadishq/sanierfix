@@ -5,7 +5,7 @@
 (() => {
   'use strict';
 
-  const FRAME_COUNT = 302;              // frames in the source film (30 fps)
+  const FRAME_COUNT = 453;              // frames in the source film (30 fps)
   const SEG = 10;                       // timeline units per step
 
   const root = document.documentElement;
@@ -74,9 +74,9 @@
   // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
   const FILES = {
     // Large / high-density screens get 2560×1440, everything else 1920×1080 (both mastered from the 4K film)
-    land: { preview: 'assets/video/film-preview.mp4?v=4k',
-            hd: innerWidth * Math.min(devicePixelRatio || 1, 2) >= 2200 ? 'assets/video/film-1440.mp4?v=4k' : 'assets/video/film-1080.mp4?v=4k' },
-    port: { preview: 'assets/video/film-portrait-preview.mp4?v=4k', hd: 'assets/video/film-portrait.mp4?v=4k' },
+    land: { preview: 'assets/video/film-preview.mp4?v=mht1',
+            hd: innerWidth * Math.min(devicePixelRatio || 1, 2) >= 2200 ? 'assets/video/film-1440.mp4?v=mht1' : 'assets/video/film-1080.mp4?v=mht1' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4?v=mht1', hd: 'assets/video/film-portrait.mp4?v=mht1' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
   let currentKey = pickKey();
