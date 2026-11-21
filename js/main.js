@@ -338,7 +338,7 @@
       .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'expo.inOut' }, '-=0.1')
       .from(introWords, { y: (i, el) => el.offsetHeight * 1.15, stagger: 0.08, duration: 1.4, ease: 'expo.out' }, '-=0.5')
       .from(introSide, { autoAlpha: 0, y: 16, stagger: 0.1, duration: 1, ease: 'power3.out' }, '-=1.1')
-      .from('.nav', { autoAlpha: 0, y: -16, duration: 1, ease: 'power3.out' }, '-=1');
+      .fromTo('.nav', { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, '-=1');
   }
 
   loadFilm(currentKey, () => {
@@ -383,6 +383,7 @@
   /* ---------- Navigation ---------- */
   function initNav() {
     const nav = $('[data-nav]');
+    gsap.set(nav, { clearProps: 'transform,opacity,visibility' });   // CSS owns the header position from here on
     const toggle = $('[data-menu-toggle]');
     const menu = $('[data-menu]');
 
