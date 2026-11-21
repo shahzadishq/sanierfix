@@ -12,3 +12,6 @@ ffmpeg -v error -y -i "$SRC" -vf "crop=ih*2/3:ih:(iw-ih*2/3)/2:0,$SHARP" $X264 -
 wait
 ffmpeg -v error -y -i "$SRC" -vf "select=eq(n\,0),scale=1280:-1" -frames:v 1 -q:v 4 "$ROOT/assets/img/poster.jpg"
 echo "Done. If the frame count changed, update FRAME_COUNT in js/main.js and data-frame on each chapter."
+# Light previews (open the site fast; HD is swapped in when downloaded)
+ffmpeg -v error -y -i "$SRC" -vf "scale=960:540:flags=lanczos" $X264 -crf 26 "$ROOT/assets/video/film-preview.mp4"
+ffmpeg -v error -y -i "$SRC" -vf "crop=ih*2/3:ih:(iw-ih*2/3)/2:0,scale=480:720:flags=lanczos" $X264 -crf 26 "$ROOT/assets/video/film-portrait-preview.mp4"

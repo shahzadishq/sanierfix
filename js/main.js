@@ -58,37 +58,59 @@
      ========================================================================== */
   const filmEl = $('.film');
   const stage = $('[data-film]');
-  const video = $('[data-film-video]');
-  const hudBuffer = $('[data-buffer]');
-  const hudStep = $('[data-step-num]');
+  let video = $('[data-film-video]');
   const rail = $('[data-rail]');
-  const progressBar = $('[data-progress]');
   const chapters = $$('[data-chapter]');
 
   // Rest frames: each scroll gesture travels to the next complete scene and stops.
   const STEPS = [0, ...chapters.map((c) => Math.min(FRAME_COUNT - 1, Number(c.dataset.frame)))];
   const STEP_COUNT = STEPS.length - 1;
-  $('[data-step-total]').textContent = String(STEP_COUNT).padStart(2, '0');
 
   const state = { frame: 0 };
   let filmST = null;
   let duration = FRAME_COUNT / 30;
   let cur = 0, inflight = false;
 
-  const pickSrc = () => (innerHeight > innerWidth * 1.1 ? 'assets/video/film-portrait.mp4' : 'assets/video/film-1080.mp4');
-  let currentSrc = pickSrc();
-
-  video.addEventListener('loadedmetadata', () => { if (isFinite(video.duration)) duration = video.duration; });
-  video.addEventListener('seeked', () => { inflight = false; filmEl.classList.add('is-ready'); });
-  video.addEventListener('loadeddata', () => { prime(); filmEl.classList.add('is-ready'); });
+  // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
+  const FILES = {
+    land: { preview: 'assets/video/film-preview.mp4', hd: 'assets/video/film-1080.mp4' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4', hd: 'assets/video/film-portrait.mp4' },
+  };
+  const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
+  let currentKey = pickKey();
 
   // A quick play/pause unlocks seeking on iOS/Safari; the film never plays on its own.
-  let primed = false;
-  function prime() {
-    if (primed) return; primed = true;
-    const stop = () => { try { video.pause(); } catch (e) {} };
-    try { const pr = video.play(); if (pr && pr.then) pr.then(() => setTimeout(stop, 60)).catch(stop); else setTimeout(stop, 60); } catch (e) { stop(); }
+  function prime(v) {
+    if (v.dataset.primed) return; v.dataset.primed = '1';
+    const stop = () => { try { v.pause(); } catch (e) {} };
+    try { const pr = v.play(); if (pr && pr.then) pr.then(() => setTimeout(stop, 60)).catch(stop); else setTimeout(stop, 60); } catch (e) { stop(); }
     setTimeout(stop, 300);
+  }
+  function bindVideo(v) {
+    v.addEventListener('loadedmetadata', () => { if (isFinite(v.duration)) duration = v.duration; });
+    v.addEventListener('seeked', () => { if (v === video) inflight = false; filmEl.classList.add('is-ready'); });
+    v.addEventListener('loadeddata', () => { prime(v); filmEl.classList.add('is-ready'); });
+  }
+  bindVideo(video);
+
+  // Swap in a new file without a flash: prepare it in a hidden twin, seek it, then exchange.
+  function showFile(url) {
+    if (!video.getAttribute('src')) { video.src = url; video.load(); return; }
+    const nv = video.cloneNode(false);
+    nv.removeAttribute('src'); delete nv.dataset.primed;
+    nv.style.opacity = '0';
+    bindVideo(nv);
+    video.after(nv);
+    nv.addEventListener('loadeddata', () => {
+      nv.addEventListener('seeked', () => {
+        const old = video;
+        video = nv; inflight = false; cur = nv.currentTime;
+        nv.style.opacity = '';
+        old.remove();
+      }, { once: true });
+      try { nv.currentTime = video.currentTime || 0.001; } catch (e) {}
+    }, { once: true });
+    nv.src = url; nv.load();
   }
 
   // Scrub loop: ease towards the target time, one seek at a time.
@@ -96,7 +118,7 @@
     const target = (state.frame / (FRAME_COUNT - 1)) * duration;
     cur += (target - cur) * (reduceMotion ? 1 : 0.32);
     if (Math.abs(target - cur) < 0.002) cur = target;
-    if (!video.paused && primed) { try { video.pause(); } catch (e) {} }
+    if (!video.paused && video.dataset.primed) { try { video.pause(); } catch (e) {} }
     if (!inflight && video.readyState >= 2 && Math.abs(cur - video.currentTime) > 0.008) {
       inflight = true;
       try { video.currentTime = Math.min(duration - 0.001, Math.max(0, cur)); } catch (e) { inflight = false; }
@@ -115,15 +137,12 @@
     rail.appendChild(li);
   });
   const railItems = $$('li', rail);
-  const setProgress = gsap.quickSetter(progressBar, 'scaleX');
   let activeStep = -1;
 
   function updateHud(progress) {
-    setProgress(progress);
     const step = Math.round(progress * STEP_COUNT);
     if (step !== activeStep) {
       activeStep = step;
-      hudStep.textContent = String(step).padStart(2, '0');
       railItems.forEach((li, n) => li.classList.toggle('is-active', n + 1 === step));
     }
   }
@@ -263,38 +282,40 @@
   let shown = 0;
   let started = false;
 
+  const loaderRing = $('[data-loader-ring]');
+  const RING = 2 * Math.PI * 26;
   function setLoader(p) {
     shown = Math.max(shown, Math.min(100, Math.round(p * 100)));
     loaderCount.textContent = shown;
-    loaderBar.style.transform = `scaleX(${shown / 100})`;
+    if (loaderRing) loaderRing.style.strokeDashoffset = String(RING * (1 - shown / 100));
   }
 
-  function loadFilm(src, onDone) {
-    fetch(src).then((r) => {
+  function fetchBlob(url, onProgress) {
+    return fetch(url).then((r) => {
       if (!r.ok || !r.body) throw new Error('stream');
       const total = +(r.headers.get('content-length') || 0);
       let got = 0; const chunks = []; const rd = r.body.getReader();
       const pump = () => rd.read().then((x) => {
-        if (x.done) return new Blob(chunks, { type: 'video/mp4' });
+        if (x.done) return URL.createObjectURL(new Blob(chunks, { type: 'video/mp4' }));
         chunks.push(x.value); got += x.value.length;
-        if (total) { const p = got / total; if (!started) setLoader(p * 0.97); hudBuffer.textContent = `Film lädt ${Math.round(p * 100)}%`; }
+        if (total && onProgress) onProgress(got / total);
         return pump();
       });
       return pump();
-    }).then((blob) => {
-      if (src !== currentSrc) return;
-      const t = video.currentTime || 0;
-      video.src = URL.createObjectURL(blob);
-      video.load();
-      video.addEventListener('loadeddata', () => { try { video.currentTime = t; } catch (e) {} }, { once: true });
-      hudBuffer.classList.add('is-done');
-      onDone && onDone();
-    }).catch(() => {
-      // Fallback: stream directly (range requests still allow seeking)
-      video.src = src; video.preload = 'auto'; video.load();
-      hudBuffer.classList.add('is-done');
-      onDone && onDone();
     });
+  }
+
+  // 1) light preview → open the site  2) HD film in the background → swap in seamlessly
+  function loadFilm(key, onReady) {
+    const f = FILES[key];
+    fetchBlob(f.preview, (p) => { if (!started) setLoader(p * 0.97); })
+      .then((url) => { if (key === currentKey) showFile(url); })
+      .catch(() => { if (key === currentKey) showFile(f.preview); })
+      .then(() => {
+        onReady && onReady();
+        return fetchBlob(f.hd).then((url) => { if (key === currentKey) showFile(url); })
+          .catch(() => { if (key === currentKey) showFile(f.hd); });
+      });
   }
 
   function start() {
@@ -305,7 +326,7 @@
     const introSide = $$('.film__intro .script, .film__lead, .film__cue');
 
     gsap.timeline({
-      delay: 0.15,
+      delay: 0.2,
       onComplete: () => {
         root.classList.remove('is-loading');
         root.classList.add('is-loaded');
@@ -313,24 +334,23 @@
         initPage();
       },
     })
-      .to('.loader__logo, .loader__foot, .loader__bar', { autoAlpha: 0, y: -20, duration: 0.6, stagger: 0.05, ease: 'power2.in' })
-      .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut' }, '-=0.15')
-      .from(introWords, { y: (i, el) => el.offsetHeight * 1.15, stagger: 0.08, duration: 1.4, ease: 'expo.out' }, '-=0.55')
+      .to('.loader__inner', { autoAlpha: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' })
+      .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'expo.inOut' }, '-=0.1')
+      .from(introWords, { y: (i, el) => el.offsetHeight * 1.15, stagger: 0.08, duration: 1.4, ease: 'expo.out' }, '-=0.5')
       .from(introSide, { autoAlpha: 0, y: 16, stagger: 0.1, duration: 1, ease: 'power3.out' }, '-=1.1')
       .from('.nav', { autoAlpha: 0, y: -16, duration: 1, ease: 'power3.out' }, '-=1');
   }
 
-  loadFilm(currentSrc, () => {
+  loadFilm(currentKey, () => {
     const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    Promise.race([fonts, new Promise((r) => setTimeout(r, 1200))]).then(start);
+    Promise.race([fonts, new Promise((r) => setTimeout(r, 800))]).then(start);
   });
-  // Like a native app, the site opens once the whole film is on the device (so it can never lag behind
-  // the scroll). On very slow connections we give up waiting after 45 s and stream instead.
+  // Safety net for very slow connections.
   setTimeout(() => {
     if (started) return;
-    if (!video.src) { video.src = currentSrc; video.preload = 'auto'; video.load(); }
+    if (!video.getAttribute('src')) showFile(FILES[currentKey].preview);
     start();
-  }, 45000);
+  }, 20000);
 
   /* ==========================================================================
      Page
@@ -354,8 +374,8 @@
     addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        const next = pickSrc();
-        if (next !== currentSrc) { currentSrc = next; loadFilm(next); }
+        const next = pickKey();
+        if (next !== currentKey) { currentKey = next; loadFilm(next); }
       }, 250);
     });
   }
@@ -370,7 +390,7 @@
       trigger: filmEl,
       start: () => filmST.end + 2,
       end: 'max',
-      onToggle: (self) => nav.classList.toggle('is-solid', self.isActive),
+      onToggle: (self) => { nav.classList.toggle('is-solid', self.isActive); root.classList.toggle('past-film', self.isActive); },
     });
     ScrollTrigger.create({
       start: 0, end: 'max',
