@@ -6,7 +6,7 @@ Premium website for Sanier Fix (Landau in der Pfalz) with a cinematic, scroll-co
 
 - **Scroll-controlled film, one scene per gesture.** The hero is pinned and every scroll position maps to a frame of the construction film. Each scroll gesture glides to the next *complete* scene (plot → blueprint → structure → façade → entrance → living → kitchen → bedroom → dusk) and stops there — never mid-transition. Rest frames are set by `data-frame` on each chapter in `index.html`.
 - **Smooth playback.** The film is an all-intra H.264 MP4 (every frame a keyframe) that is fully downloaded before the site opens, then seeked by scroll with easing — hardware-decoded, so there is no memory pressure or stutter. GSAP Observer turns each wheel/touch gesture into one animated step.
-- **Video files:** `assets/video/film-1080.mp4` (1920×1080, CRF 15, desktop) and `film-portrait.mp4` (720×1080 crop, phones in portrait).
+- **Video files:** `assets/video/film-1080.mp4` (1920×1080, CRF 18, desktop) and `film-portrait.mp4` (720×1080 crop, phones in portrait).
 - **Brand assets** (logo, team & reference photos, brush icons) are loaded directly from sanier-fix.com/wp-content/uploads.
 - **Chapters synced to scenes:** Ground → Structure → Form → Threshold → Living → Kitchen → Retreat → Home, each with masked word reveals, plus a chapter rail and a frame counter.
 - **Full site:** studio statement (words light up as you read), stats, services (with a cursor-following image preview), a pinned horizontal residence gallery, philosophy, process timeline, contact form and footer.

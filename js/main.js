@@ -324,12 +324,13 @@
     const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
     Promise.race([fonts, new Promise((r) => setTimeout(r, 1200))]).then(start);
   });
-  // On slow connections, open the site after a while and stream the film meanwhile.
+  // Like a native app, the site opens once the whole film is on the device (so it can never lag behind
+  // the scroll). On very slow connections we give up waiting after 45 s and stream instead.
   setTimeout(() => {
     if (started) return;
     if (!video.src) { video.src = currentSrc; video.preload = 'auto'; video.load(); }
     start();
-  }, 12000);
+  }, 45000);
 
   /* ==========================================================================
      Page
