@@ -74,9 +74,9 @@
   // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
   const FILES = {
     // Large / high-density screens get 2560×1440, everything else 1920×1080 (both mastered from the 4K film)
-    land: { preview: 'assets/video/film-preview.mp4?v=mht1',
-            hd: innerWidth * Math.min(devicePixelRatio || 1, 2) >= 2200 ? 'assets/video/film-1440.mp4?v=mht1' : 'assets/video/film-1080.mp4?v=mht1' },
-    port: { preview: 'assets/video/film-portrait-preview.mp4?v=mht1', hd: 'assets/video/film-portrait.mp4?v=mht1' },
+    land: { preview: 'assets/video/film-preview.mp4?v=mht2',
+            hd: innerWidth * Math.min(devicePixelRatio || 1, 2) >= 2200 ? 'assets/video/film-1440.mp4?v=mht2' : 'assets/video/film-1080.mp4?v=mht2' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4?v=mht2', hd: 'assets/video/film-portrait.mp4?v=mht2' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
   let currentKey = pickKey();
