@@ -59,3 +59,9 @@ A second version of the homepage built around the vertical film *Modern Home Tra
 On landscape screens the film is shown in a tall rounded frame on the right over a blurred live backdrop; on phones it plays full-screen.
 Seven scenes stop at frames 48, 110, 180, 266, 310, 348 and 452 (`data-frame` in `v2/index.html`).
 Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`), `v2/main-v2.js`, `v2/assets/video/film-{preview,hd}.mp4`.
+
+## V3 (walk-through) — `/v3/`
+
+Built around *Modern Residence Transformation* (4K, 198 frames), motion-interpolated to 60 fps (393 frames) so slow, cinematic scrolling stays fluid.
+Five scenes stop at frames 88, 152, 216, 270 and 392 of the 60 fps film. Each step travels 2.2–3.1 s with sine easing and a soft camera lean-in between rooms.
+Files: `v3/index.html`, `v3/main-v3.js`, `v3/assets/video/*`.
