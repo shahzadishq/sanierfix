@@ -239,6 +239,7 @@
         start: 'top top',
         end: () => '+=' + Math.round(innerHeight * STEP_COUNT),
         pin: stage,
+        refreshPriority: 10,
         scrub: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,

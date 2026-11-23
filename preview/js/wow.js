@@ -30,10 +30,9 @@ $$('[data-bt]').forEach((row) => {
   const html = seq.map((w, i) => (i % 2 && dir > 0 ? `<em>${w}</em>` : `<span>${w}</span>`) + '<b>✦</b>').join('');
   row.innerHTML = html + html;
   if (reduce) return;
-  const half = () => row.scrollWidth / 2;
-  gsap.fromTo(row, { x: () => (dir < 0 ? 0 : -half()) }, {
-    x: () => (dir < 0 ? -half() : 0), ease: 'none',
-    scrollTrigger: { trigger: '.bigtype', start: 'top bottom', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true },
+  gsap.fromTo(row, { xPercent: dir < 0 ? 0 : -50 }, {
+    xPercent: dir < 0 ? -50 : 0, ease: 'none',
+    scrollTrigger: { trigger: '.bigtype', start: 'top bottom', end: 'bottom top', scrub: 0.8 },
   });
 });
 
@@ -77,7 +76,7 @@ if (fine && !reduce) {
   document.addEventListener('pointerleave', () => cur.classList.remove('is-on'));
   addEventListener('pointerdown', () => cur.classList.add('is-down'));
   addEventListener('pointerup', () => cur.classList.remove('is-down'));
-  const labels = [['.gallery__track', 'Ziehen'], ['.fcard', 'Öffnen'], ['.compare', 'Ziehen'], ['.service', 'Ansehen']];
+  const labels = [['.fcard', 'Öffnen'], ['.compare', 'Ziehen'], ['.service', 'Ansehen'], ['.card', 'Ansehen']];
   labels.forEach(([sel, txt]) => $$(sel).forEach((el) => {
     el.addEventListener('pointerenter', () => { label.textContent = txt; cur.classList.add('is-label'); });
     el.addEventListener('pointerleave', () => cur.classList.remove('is-label'));
@@ -87,19 +86,6 @@ if (fine && !reduce) {
     el.addEventListener('pointerenter', () => cur.classList.add('is-link'));
     el.addEventListener('pointerleave', () => cur.classList.remove('is-link'));
   });
-}
-
-/* ---- gallery: velocity skew ---- */
-const track = $('[data-gallery-track]');
-if (track && !reduce) {
-  const cards = $$('.card', track); let last = track.scrollLeft;
-  const rel = gsap.quickTo(cards, 'skewX', { duration: 0.5, ease: 'power3' });
-  let t;
-  track.addEventListener('scroll', () => {
-    const d = track.scrollLeft - last; last = track.scrollLeft;
-    rel(gsap.utils.clamp(-9, 9, -d * 0.35));
-    clearTimeout(t); t = setTimeout(() => rel(0), 90);
-  }, { passive: true });
 }
 
 /* ---- card image parallax-scale on scroll ---- */
@@ -118,4 +104,11 @@ if (word) {
 }
 
 addEventListener('load', () => ScrollTrigger.refresh());
+/* keep trigger positions in sync when lazy images / fonts shift the layout */
+{
+  let lastH = document.documentElement.scrollHeight, t;
+  const check = () => { const h = document.documentElement.scrollHeight; if (Math.abs(h - lastH) > 2) { lastH = h; ScrollTrigger.refresh(); } };
+  if ('ResizeObserver' in window) new ResizeObserver(() => { clearTimeout(t); t = setTimeout(check, 200); }).observe(document.body);
+  document.fonts && document.fonts.ready.then(() => setTimeout(() => ScrollTrigger.refresh(), 100));
+}
 })();

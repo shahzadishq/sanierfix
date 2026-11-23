@@ -45,7 +45,7 @@
   // ---------- Generic reveals ----------
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 88%', once: true,
-    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: .12, overwrite: true }),
+    onEnter: (els) => gsap.to(els, { opacity: 1, x: 0, y: 0, scale: 1, duration: 1.2, stagger: .12, ease: 'power3.out', overwrite: true }),
   });
   splits.forEach((words, el) => {
     if (el.matches('[data-hero-title]')) return;
@@ -81,19 +81,9 @@
     c.addEventListener('pointerleave', () => { rx(0); ry(0); });
   });
 
-  // ---------- Services: hover image preview that follows the cursor ----------
-  const prev = $('[data-service-preview]');
-  if (prev && finePointer) {
-    const img = $('img', prev);
-    const mx = gsap.quickTo(prev, 'x', { duration: .6, ease: 'power3' }), my = gsap.quickTo(prev, 'y', { duration: .6, ease: 'power3' });
-    $$('.service').forEach((s) => {
-      s.addEventListener('pointerenter', (e) => { img.src = s.dataset.img; mx(e.clientX + 30); my(e.clientY - 120); gsap.to(prev, { opacity: 1, scale: 1, rotate: 0, duration: .5 }); });
-      s.addEventListener('pointermove', (e) => { mx(e.clientX + 30); my(e.clientY - 120); });
-      s.addEventListener('pointerleave', () => gsap.to(prev, { opacity: 0, scale: .8, rotate: -4, duration: .4 }));
-    });
-    $$('.service').forEach((s) => { const p = new Image(); p.src = s.dataset.img; });
-  }
-  ScrollTrigger.batch('.service', { start: 'top 92%', once: true, onEnter: (els) => gsap.from(els, { opacity: 0, y: 30, duration: .9, stagger: .06 }) });
+  // ---------- Services: tiles get their hover image from data-img ----------
+  $$('.service').forEach((s) => { s.style.setProperty('--img', `url("${s.dataset.img}")`); });
+  ScrollTrigger.batch('.service', { start: 'top 92%', once: true, onEnter: (els) => gsap.from(els, { opacity: 0, y: 50, scale: .94, duration: 1, stagger: .07, ease: 'power3.out' }) });
 
   // ---------- Compare slider ----------
   const cmp = $('[data-compare]');
@@ -104,23 +94,11 @@
     ScrollTrigger.create({ trigger: cmp, start: 'top 70%', once: true, onEnter: () => { const o = { v: 50 }; gsap.timeline().to(o, { v: 22, duration: 1, ease: 'power2.inOut', onUpdate: () => set(o.v) }).to(o, { v: 78, duration: 1.4, ease: 'power2.inOut', onUpdate: () => set(o.v) }).to(o, { v: 50, duration: 1, ease: 'power2.inOut', onUpdate: () => { set(o.v); range.value = o.v; } }); } });
   }
 
-  // ---------- Gallery: native horizontal scroll + drag + progress ----------
-  const track = $('[data-gallery-track]'), gp = $('[data-gallery-progress]');
-  if (track) {
-    const upd = () => { const max = track.scrollWidth - track.clientWidth; gp.style.transform = `scaleX(${Math.max(.08, max > 0 ? track.scrollLeft / max : 1)})`; };
-    track.addEventListener('scroll', upd, { passive: true }); upd();
-    let down = false, sx = 0, sl = 0, moved = 0;
-    track.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = track.scrollLeft; moved = 0; });
-    addEventListener('pointermove', (e) => { if (!down) return; moved = e.clientX - sx; if (Math.abs(moved) > 4) track.classList.add('is-drag'); track.scrollLeft = sl - moved; });
-    addEventListener('pointerup', () => { down = false; track.classList.remove('is-drag'); });
-    $$('.card', track).forEach((c, i) => gsap.from(c, { opacity: 0, y: 60, duration: 1, delay: i * .05, ease: 'power3.out', scrollTrigger: { trigger: track, start: 'top 85%', once: true } }));
-  }
-
   // ---------- Process: drawn line + active steps ----------
   const line = $('[data-steps-line]'), stepsEl = $('[data-steps]');
   if (line && stepsEl) {
-    gsap.to(line, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: stepsEl, start: 'top 65%', end: 'bottom 60%', scrub: .4 } });
-    $$('[data-step]').forEach((s) => ScrollTrigger.create({ trigger: s, start: 'top 62%', onEnter: () => s.classList.add('is-active'), onLeaveBack: () => s.classList.remove('is-active') }));
+    gsap.fromTo(line, { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: stepsEl, start: 'top 55%', end: 'bottom 65%', scrub: .5, invalidateOnRefresh: true } });
+    $$('[data-step]').forEach((s) => ScrollTrigger.create({ trigger: s, start: 'top 58%', onEnter: () => s.classList.add('is-active'), onLeaveBack: () => s.classList.remove('is-active') }));
   }
 
   // ---------- Contact + footer ----------
