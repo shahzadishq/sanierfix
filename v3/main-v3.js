@@ -237,9 +237,11 @@
       scrollTrigger: {
         trigger: filmEl,
         start: 'top top',
-        end: () => '+=' + Math.round(innerHeight * STEP_COUNT),
+        // ~0.6 screen of scroll per scene → the whole film finishes in ~3 screens,
+        // matching the Bath-Studio pace (it was 1 screen/scene = too much scrolling).
+        end: () => '+=' + Math.round(innerHeight * STEP_COUNT * 0.6),
         pin: stage,
-        scrub: 0.6,                 // smooth catch-up (Bath-Studio feel) instead of raw 1:1
+        scrub: true,                // film tracks scroll tightly; the seek loop (ease 0.3) does the smoothing
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => updateHud(self.progress),
