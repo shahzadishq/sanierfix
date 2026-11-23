@@ -268,17 +268,20 @@
       const isLast = k === STEP_COUNT;
       const words = splitWords($('.chapter__title', ch));
       const side = $$('.chapter__num, .chapter__body, .chapter__actions', ch);
+      // Quick reveal, then HOLD the heading fully readable for ~70% of the scene,
+      // so a free-scroll stop never lands on half-shown words. Clean hand-off:
+      // the previous heading has finished leaving exactly as this one starts.
       const tIn = rest - 4.6;
 
-      tl.fromTo(ch, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tIn)
-        .fromTo(words, { yPercent: 115 }, { yPercent: 0, stagger: 0.25, duration: 3, ease: 'power3.out' }, tIn)
-        .fromTo(side, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.3, duration: 2.4, ease: 'power2.out' }, tIn + 0.8);
+      tl.fromTo(ch, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25 }, tIn)
+        .fromTo(words, { yPercent: 115 }, { yPercent: 0, stagger: 0.05, duration: 0.7, ease: 'power3.out' }, tIn)
+        .fromTo(side, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.07, duration: 0.7, ease: 'power2.out' }, tIn + 0.3);
 
       if (!isLast) {
-        const tOut = rest + 0.8;
-        tl.to(words, { yPercent: -115, stagger: 0.1, duration: 2.2, ease: 'power2.in' }, tOut)
-          .to(side, { autoAlpha: 0, y: -16, duration: 1.8, ease: 'power2.in' }, tOut)
-          .to(ch, { autoAlpha: 0, duration: 0.3 }, tOut + 2.4);
+        const tOut = rest + 4.2;
+        tl.to(words, { yPercent: -115, stagger: 0.04, duration: 0.7, ease: 'power2.in' }, tOut)
+          .to(side, { autoAlpha: 0, y: -16, duration: 0.6, ease: 'power2.in' }, tOut)
+          .to(ch, { autoAlpha: 0, duration: 0.25 }, tOut + 0.9);
       }
     });
 
