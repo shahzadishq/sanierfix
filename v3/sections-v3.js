@@ -13,6 +13,37 @@
     if (!root) return;
     const RM = !!reduceMotion;
 
+    /* ---------- before / after: pinned AI scan (created first: later triggers must see its pin spacing) ---------- */
+    const ba = $('[data-ba]');
+    if (ba) {
+      const bar = $('[data-ba-bar]');
+      const range = $('[data-ba-range]');
+      const notes = $$('.ba__notes li', ba);
+      // p = position of the scan line (100 = right edge … 0 = left edge). Left of it: Vorher, right of it: Nachher.
+      const setP = (p) => {
+        ba.style.setProperty('--p', p + '%');
+        if (bar) bar.style.transform = `scaleX(${(100 - p) / 100})`;
+        notes.forEach((n) => n.classList.toggle('is-on', p <= Number(n.dataset.at)));
+      };
+      range.addEventListener('input', () => setP(Number(range.value)));
+      if (RM) {
+        setP(50); range.value = 50; ba.classList.add('is-free');
+      } else {
+        const o = { p: 100 };
+        setP(100); range.value = 100;
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: '[data-x-ba]', start: 'top top', end: () => '+=' + Math.round(innerHeight * 1.5),
+            pin: true, scrub: 0.8, invalidateOnRefresh: true,
+            onUpdate: (self) => { const free = self.progress > 0.985; ba.classList.toggle('is-free', free); },
+          },
+        })
+          .fromTo(ba, { scale: 0.86, rotateX: 10, transformPerspective: 1400 }, { scale: 1, rotateX: 0, duration: 0.25, ease: 'power2.out' }, 0)
+          .to(o, { p: 0, duration: 1, ease: 'none', onUpdate: () => { setP(o.p); range.value = o.p; } }, 0.15)
+          .to({}, { duration: 0.12 });
+      }
+    }
+
     /* ---------- generic reveals & split titles ---------- */
     $$('[data-x-split]').forEach((el) => {
       const words = splitWords(el);
@@ -130,36 +161,6 @@
         const img = $('img', card);
         gsap.fromTo(img, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
-    }
-
-    /* ---------- before / after: pinned AI scan, then free comparison ---------- */
-    const ba = $('[data-ba]');
-    if (ba) {
-      const bar = $('[data-ba-bar]');
-      const range = $('[data-ba-range]');
-      const notes = $$('.ba__notes li', ba);
-      const setP = (p) => {
-        ba.style.setProperty('--p', p + '%');
-        if (bar) bar.style.transform = `scaleX(${p / 100})`;
-        notes.forEach((n) => n.classList.toggle('is-on', p >= Number(n.dataset.at)));
-      };
-      range.addEventListener('input', () => setP(Number(range.value)));
-      if (RM) {
-        setP(50); range.value = 50; ba.classList.add('is-free');
-      } else {
-        const o = { p: 0 };
-        setP(0);
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: '[data-x-ba]', start: 'top top', end: () => '+=' + Math.round(innerHeight * 1.5),
-            pin: true, scrub: 0.8, invalidateOnRefresh: true,
-            onUpdate: (self) => { const free = self.progress > 0.985; ba.classList.toggle('is-free', free); },
-          },
-        })
-          .fromTo(ba, { scale: 0.86, rotateX: 10, transformPerspective: 1400 }, { scale: 1, rotateX: 0, duration: 0.25, ease: 'power2.out' }, 0)
-          .to(o, { p: 100, duration: 1, ease: 'none', onUpdate: () => { setP(o.p); range.value = o.p; } }, 0.15)
-          .to({}, { duration: 0.12 });
-      }
     }
 
     /* ---------- process: the path draws itself, steps light up ---------- */
