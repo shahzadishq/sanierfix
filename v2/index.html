@@ -22,8 +22,8 @@
 
   <link rel="preload" as="image" href="assets/img/poster.jpg">
   <link rel="stylesheet" href="../css/style.css?v=v2a">
-  <link rel="stylesheet" href="v2.css?v=1">
-  <link rel="stylesheet" href="editorial.css?v=2">
+  <link rel="stylesheet" href="v2.css?v=2">
+  <link rel="stylesheet" href="editorial.css?v=3">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -88,6 +88,7 @@
       <span id="top"></span>
       <div class="film__stage" data-film>
         <div class="film__frame">
+          <img class="film__bg" src="assets/img/hero-bg.jpg" alt="" aria-hidden="true">
           <canvas class="film__ambient" data-ambient aria-hidden="true"></canvas>
           <video class="film__video" data-film-video muted playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
           <img class="film__poster" src="assets/img/poster.jpg" alt="">
@@ -152,10 +153,29 @@
     <!-- ============ ÜBER UNS / STATEMENT ============ -->
     <section class="statement section" id="ueber-uns">
       <div class="container">
-        <p class="eyebrow" data-reveal>Über Sanier Fix</p>
-        <p class="statement__text" data-words>
-          Wir sind ein inhabergeführter Familienbetrieb aus Landau in der Pfalz. Seit über zehn Jahren sanieren, renovieren und modernisieren wir Immobilien – mit einem festen Ansprechpartner, hauseigenem Energieberater und einem eingespielten Team von der ersten Besichtigung bis zur Schlüsselübergabe.
-        </p>
+        <div class="about">
+          <div class="about__copy">
+            <p class="eyebrow" data-reveal>Über Sanier Fix</p>
+            <p class="statement__text" data-words>
+              Wir sind ein inhabergeführter Familienbetrieb aus Landau in der Pfalz. Seit über zehn Jahren sanieren, renovieren und modernisieren wir Immobilien – mit einem festen Ansprechpartner, hauseigenem Energieberater und einem eingespielten Team von der ersten Besichtigung bis zur Schlüsselübergabe.
+            </p>
+            <ul class="about__facts">
+              <li data-reveal><b>01</b><span>Inhabergeführter Familienbetrieb</span></li>
+              <li data-reveal><b>02</b><span>Fester Ansprechpartner</span></li>
+              <li data-reveal><b>03</b><span>Hauseigener Energieberater</span></li>
+            </ul>
+            <a class="about__link" href="#kontakt" data-reveal>Uns kennenlernen</a>
+          </div>
+          <div class="about__media">
+            <figure class="about__img about__img--a" data-reveal="right">
+              <img src="https://sanier-fix.com/wp-content/uploads/2026/05/Ueber-uns-2-scaled-1.webp" alt="Bauleiter mit Helm vor einem eingerüsteten Gebäude" loading="lazy">
+            </figure>
+            <figure class="about__img about__img--b" data-reveal="left">
+              <img src="https://sanier-fix.com/wp-content/uploads/2026/05/Ueber-Uns-1-scaled-1.webp" alt="Zwei Sanier-Fix-Mitarbeiter besprechen Baupläne vor Ort" loading="lazy">
+            </figure>
+            <div class="about__badge" data-reveal="scale"><b>10+</b><span>Jahre Erfahrung</span></div>
+          </div>
+        </div>
 
         <div class="stats">
           <div class="stat" data-reveal>

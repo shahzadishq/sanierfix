@@ -5,20 +5,22 @@
    ========================================================================== */
 
 .film__ambient { display: none; }
+.film__bg { display: none; }
 
 @media (orientation: landscape) {
   .film__frame { background: var(--navy-deep); }
 
+  .film__bg { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; z-index: 0; }
   .film__ambient {
-    display: block; position: absolute; inset: -8%; width: 116%; height: 116%;
+    display: none; position: absolute; inset: -8%; width: 116%; height: 116%;
     filter: blur(42px) saturate(1.15); opacity: .55; transform: translateZ(0);
   }
 
   .film__shade {
     z-index: 1;
     background:
-      linear-gradient(90deg, rgba(0,22,52,.92) 0%, rgba(0,22,52,.7) 36%, rgba(0,22,52,.22) 68%, rgba(0,22,52,.4) 100%),
-      linear-gradient(180deg, rgba(0,22,52,.5) 0%, rgba(0,22,52,0) 22%);
+      linear-gradient(90deg, rgba(0,22,52,.74) 0%, rgba(0,22,52,.5) 34%, rgba(0,22,52,.08) 66%, rgba(0,22,52,.18) 100%),
+      linear-gradient(180deg, rgba(0,22,52,.42) 0%, rgba(0,22,52,0) 22%);
   }
 
   .film__video, .film__poster {
@@ -61,6 +63,5 @@
 }
 
 .chapter--final .chapter__actions { pointer-events: auto; display: flex; gap: 28px; align-items: center; flex-wrap: wrap; margin-top: 34px; }
-@media (orientation: landscape) {
-  .film__ambient { opacity: .85; }
-}
+
+@media (orientation: landscape) { .film__rail button { text-shadow: 0 1px 10px rgba(0,22,52,.85); color: rgba(255,255,255,.78); } }
