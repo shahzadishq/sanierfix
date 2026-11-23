@@ -282,16 +282,14 @@
      Preloader: download the whole film first (so every seek is instant)
      ========================================================================== */
   const loaderCount = $('[data-loader-count]');
-  const loaderBar = $('[data-loader-bar]');
+  const loaderEl = $('.loader');
   let shown = 0;
   let started = false;
 
-  const loaderRing = $('[data-loader-ring]');
-  const RING = 2 * Math.PI * 26;
   function setLoader(p) {
     shown = Math.max(shown, Math.min(100, Math.round(p * 100)));
     loaderCount.textContent = shown;
-    if (loaderRing) loaderRing.style.strokeDashoffset = String(RING * (1 - shown / 100));
+    loaderEl.style.setProperty('--p', shown / 100);
   }
 
   function fetchBlob(url, onProgress) {
@@ -338,8 +336,10 @@
         initPage();
       },
     })
-      .to('.loader__inner', { autoAlpha: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' })
-      .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'expo.inOut' }, '-=0.1')
+      .to('.loader__inner, .loader__big, .loader__label', { autoAlpha: 0, y: -18, duration: 0.5, ease: 'power2.in' })
+      .to('.loader__panel--t', { yPercent: -101, duration: 1.15, ease: 'expo.inOut' }, '-=0.05')
+      .to('.loader__panel--b', { yPercent: 101, duration: 1.15, ease: 'expo.inOut' }, '<')
+      .to('.loader__grid', { autoAlpha: 0, duration: 0.4 }, '<')
       .from(introWords, { y: (i, el) => el.offsetHeight * 1.15, stagger: 0.08, duration: 1.4, ease: 'expo.out' }, '-=0.5')
       .from(introSide, { autoAlpha: 0, y: 16, stagger: 0.1, duration: 1, ease: 'power3.out' }, '-=1.1')
       .fromTo('.nav', { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, '-=1');
