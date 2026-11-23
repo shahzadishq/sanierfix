@@ -494,3 +494,13 @@ a.x-mini:hover { border-color: rgba(111,220,255,.5); background: rgba(5,165,227,
 /* no code-style type: small labels use the site's Arial */
 .v3 { --mono: Arial, Helvetica, sans-serif; }
 .x-stat > span, .b__tag, .scard__num, .scard__more, .ba__tag, .ba__meter, .x-ba__note, .x-link, .x-mini span, .x-form__top, .x-chips legend, .x-footer__nav h4, .pstep__node, .pin em, .b--map h3 { font-weight: 700; letter-spacing: .04em; }
+
+/* contact icons */
+.x-ic{ display: inline-grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 11px; background: rgba(5,165,227,.12); border: 1px solid rgba(111,220,255,.3); color: var(--x-cyan); box-shadow: 0 0 20px -6px rgba(111,220,255,.55); transition: background .3s, color .3s, transform .4s; }
+.x-ic svg{ width: 17px; height: 17px; }
+.x-mini span{ display: inline-flex; align-items: center; gap: 12px; }
+a.x-mini:hover .x-ic{ background: var(--x-cyan); color: #04122a; transform: rotate(-8deg); }
+.x-footer__nav .x-fi{ display: flex; align-items: center; gap: 12px; }
+.x-footer__nav .x-fi b{ font-weight: 400; }
+.x-footer__nav .x-fi .x-ic{ width: 32px; height: 32px; border-radius: 10px; }
+.x-footer__nav a.x-fi:hover .x-ic{ background: var(--x-cyan); color: #04122a; }
