@@ -20,24 +20,38 @@
   <link rel="preconnect" href="https://sanier-fix.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Yellowtail&display=swap" rel="stylesheet">
 
-  <link rel="preload" as="image" href="assets/img/poster.jpg?v=mht1">
-  <link rel="stylesheet" href="css/style.css?v=mht1">
+  <link rel="preload" as="image" href="assets/img/poster.jpg?v=nv1">
+  <link rel="stylesheet" href="css/premium.css?v=p6">
+  <link rel="stylesheet" href="css/film.css?v=p6">
+  <link rel="stylesheet" href="css/wow.css?v=p6">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <!-- Preloader -->
+  <!-- Preloader: blueprint house draws itself while the film loads, then the curtain splits open -->
   <div class="loader" aria-hidden="true">
+    <div class="loader__panel loader__panel--t"></div>
+    <div class="loader__panel loader__panel--b"></div>
+    <div class="loader__grid"></div>
     <div class="loader__inner">
+      <svg class="loader__house" viewBox="0 0 240 170" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path class="ld" style="--s:0;--d:.12" pathLength="1" d="M8 152H232"/>
+        <path class="ld" style="--s:.08;--d:.3" pathLength="1" d="M50 152V84H170V152"/>
+        <path class="ld" style="--s:.3;--d:.22" pathLength="1" d="M38 86L110 30L182 86"/>
+        <path class="ld" style="--s:.46;--d:.1" pathLength="1" d="M142 58V36H158V70"/>
+        <path class="ld" style="--s:.52;--d:.12" pathLength="1" d="M98 152V114H122V152"/>
+        <path class="ld" style="--s:.6;--d:.12" pathLength="1" d="M62 98H88V122H62ZM132 98H158V122H132Z"/>
+        <path class="ld ld--b" style="--s:.68;--d:.22" pathLength="1" d="M196 152V40M214 152V40M196 62H214M196 92H214M196 122H214M196 92L214 62M196 122L214 92"/>
+        <path class="ld ld--b" style="--s:.84;--d:.16" pathLength="1" d="M14 152V120H30V152M14 136H30"/>
+      </svg>
       <img class="loader__logo" src="https://sanier-fix.com/wp-content/uploads/2026/03/Logo_breit_L_mit-brush-1-1.png" alt="">
-      <div class="loader__progress">
-        <svg viewBox="0 0 60 60"><circle class="loader__track" cx="30" cy="30" r="26"/><circle class="loader__ring" cx="30" cy="30" r="26" data-loader-ring/></svg>
-        <span class="loader__count"><span data-loader-count>0</span><small>%</small></span>
-      </div>
       <span class="loader__script">Deine Baustelle. Unsere Leidenschaft.</span>
+      <div class="loader__bar"><i></i></div>
     </div>
+    <div class="loader__big" aria-hidden="true"><span data-loader-count>0</span><i>%</i></div>
+    <div class="loader__label">Wir bereiten Ihr Projekt vor</div>
   </div>
 
   <!-- Navigation -->
@@ -87,7 +101,7 @@
       <div class="film__stage" data-film>
         <div class="film__frame">
           <video class="film__video" data-film-video muted playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
-          <img class="film__poster" src="assets/img/poster.jpg?v=mht1" alt="">
+          <img class="film__poster" src="assets/img/poster.jpg?v=nv1" alt="">
           <div class="film__shade"></div>
         </div>
 
@@ -100,38 +114,23 @@
 
         <!-- One chapter per step. data-frame = the frame the scroll rests on. -->
         <div class="chapters">
-          <article class="chapter chapter--left" data-chapter data-frame="48" data-label="Planung">
-            <p class="chapter__num"><b>01</b> Planung</p>
+          <article class="chapter chapter--left" data-chapter data-frame="39" data-label="Planung &amp; Rohbau">
+            <p class="chapter__num"><b>01</b> Planung &amp; Rohbau</p>
             <h2 class="chapter__title" data-split>Jedes Zuhause beginnt <em>mit einem Plan.</em></h2>
-            <p class="chapter__body">Bestandsaufnahme, Planung und Energieberatung – bevor die erste Wand steht.</p>
+            <p class="chapter__body">Bestandsaufnahme, Energieberatung, Rückbau und Rohbau – sauber geplant und termingerecht umgesetzt.</p>
           </article>
-          <article class="chapter chapter--left" data-chapter data-frame="110" data-label="Rohbau">
-            <p class="chapter__num"><b>02</b> Rohbau</p>
-            <h2 class="chapter__title" data-split>Solide Struktur. <em>Präzise gebaut.</em></h2>
-            <p class="chapter__body">Tragwerk, Rückbau und Rohbau – sauber geplant und termingerecht umgesetzt.</p>
-          </article>
-          <article class="chapter chapter--left" data-chapter data-frame="180" data-label="Fassade">
-            <p class="chapter__num"><b>03</b> Gebäudehülle</p>
+          <article class="chapter chapter--left" data-chapter data-frame="78" data-label="Gebäudehülle">
+            <p class="chapter__num"><b>02</b> Gebäudehülle</p>
             <h2 class="chapter__title" data-split>Eine Hülle, <em>die überzeugt.</em></h2>
             <p class="chapter__body">Fassade &amp; WDVS, Dach, Fenster, Türen und Außenanlagen – energieeffizient und optisch stimmig.</p>
           </article>
-          <article class="chapter chapter--left" data-chapter data-frame="268" data-label="Wohnen">
-            <p class="chapter__num"><b>04</b> Wohnen</p>
+          <article class="chapter chapter--left" data-chapter data-frame="116" data-label="Wohnen &amp; Bad">
+            <p class="chapter__num"><b>03</b> Wohnen &amp; Bad</p>
             <h2 class="chapter__title" data-split>Licht, Raum <em>und Wärme.</em></h2>
-            <p class="chapter__body">Innenausbau, Trockenbau, Böden, Putz und Lichtplanung – alles aus einer Hand.</p>
+            <p class="chapter__body">Innenausbau, Elektroinstallation, Badkonzepte und hochwertige Oberflächen – durchdacht bis ins Detail.</p>
           </article>
-          <article class="chapter chapter--left" data-chapter data-frame="306" data-label="Küche">
-            <p class="chapter__num"><b>05</b> Küche &amp; Technik</p>
-            <h2 class="chapter__title" data-split>Durchdacht <em>bis ins Detail.</em></h2>
-            <p class="chapter__body">Elektroinstallation, Gebäudetechnik und hochwertige Oberflächen – zentral koordiniert.</p>
-          </article>
-          <article class="chapter chapter--left" data-chapter data-frame="348" data-label="Schlafen &amp; Bad">
-            <p class="chapter__num"><b>06</b> Schlafen &amp; Bad</p>
-            <h2 class="chapter__title" data-split>Ruhe, <em>gut gemacht.</em></h2>
-            <p class="chapter__body">Moderne Badkonzepte und Wohlfühlräume – technisch durchdacht, hochwertig umgesetzt.</p>
-          </article>
-          <article class="chapter chapter--end" data-chapter data-frame="452" data-label="Ihr Zuhause">
-            <p class="chapter__num"><b>07</b> Ihr Zuhause</p>
+          <article class="chapter chapter--end" data-chapter data-frame="154" data-label="Ihr Zuhause">
+            <p class="chapter__num"><b>04</b> Ihr Zuhause</p>
             <h2 class="chapter__title chapter__title--xl" data-split>Alles <em>aus einer Hand.</em></h2>
             <div class="chapter__actions">
               <a class="btn btn--blue" href="#kontakt"><span>Projekt anfragen</span></a>
@@ -146,6 +145,13 @@
       </div>
     </section>
 
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track" data-marquee>
+        <span>Komplettsanierung</span><span>Kernsanierung</span><span>Energetische Sanierung</span><span>Badsanierung</span><span>Dachsanierung</span><span>Fassade &amp; WDVS</span><span>Innenausbau</span><span>Wärmepumpe</span><span>Photovoltaik</span>
+        <span>Komplettsanierung</span><span>Kernsanierung</span><span>Energetische Sanierung</span><span>Badsanierung</span><span>Dachsanierung</span><span>Fassade &amp; WDVS</span><span>Innenausbau</span><span>Wärmepumpe</span><span>Photovoltaik</span>
+      </div>
+    </div>
+
     <!-- ============ ÜBER UNS / STATEMENT ============ -->
     <section class="statement section" id="ueber-uns">
       <div class="container">
@@ -155,19 +161,19 @@
         </p>
 
         <div class="stats">
-          <div class="stat" data-reveal>
+          <div class="stat" data-reveal="scale">
             <span class="stat__num"><span data-count="28">28</span><sup>+</sup></span>
             <span class="stat__label">Fachkräfte im Einsatz</span>
           </div>
-          <div class="stat" data-reveal>
+          <div class="stat" data-reveal="scale">
             <span class="stat__num"><span data-count="10">10</span><sup>k+</sup></span>
             <span class="stat__label">m² sanierte Fläche</span>
           </div>
-          <div class="stat" data-reveal>
+          <div class="stat" data-reveal="scale">
             <span class="stat__num"><span data-count="500">500</span><sup>+</sup></span>
             <span class="stat__label">Projekte abgeschlossen</span>
           </div>
-          <div class="stat" data-reveal>
+          <div class="stat" data-reveal="scale">
             <span class="stat__num"><span data-count="4.9" data-decimals="1">4.9</span><sup>★</sup></span>
             <span class="stat__label">Google-Bewertung</span>
           </div>
@@ -178,12 +184,6 @@
         <img src="https://sanier-fix.com/wp-content/uploads/2025/09/DSC02473_B_mitLogo_BANNER-RESTLICHEN-SEITEN-FIX-scaled-1.jpg" alt="Das Sanier-Fix-Team vor einem Bagger auf der Baustelle" loading="lazy" data-band-img>
         <figcaption class="container"><span class="script script--light">Das Team hinter Sanier Fix</span></figcaption>
       </figure>
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee__track">
-          <span>Komplettsanierung</span><span>Kernsanierung</span><span>Energetische Sanierung</span><span>Badsanierung</span><span>Dachsanierung</span><span>Fassade &amp; WDVS</span><span>Innenausbau</span><span>Wärmepumpe</span><span>Photovoltaik</span>
-          <span>Komplettsanierung</span><span>Kernsanierung</span><span>Energetische Sanierung</span><span>Badsanierung</span><span>Dachsanierung</span><span>Fassade &amp; WDVS</span><span>Innenausbau</span><span>Wärmepumpe</span><span>Photovoltaik</span>
-        </div>
-      </div>
     </section>
 
     <!-- ============ LEISTUNGEN ============ -->
@@ -191,43 +191,43 @@
       <div class="container">
         <div class="section-head section-head--split">
           <div>
-            <p class="eyebrow" data-reveal>Unsere Leistungen</p>
+            <p class="eyebrow" data-reveal="left">Unsere Leistungen</p>
             <h2 class="h2" data-split>Von der Gebäudehülle <em>bis zum Innenausbau.</em></h2>
           </div>
-          <p class="section-head__aside" data-reveal>Alles aus einer Hand – professionell geplant und zuverlässig umgesetzt, für Altbau und Neubau, nach KfW- und BAFA-Standards.</p>
+          <p class="section-head__aside" data-reveal="right">Alles aus einer Hand – professionell geplant und zuverlässig umgesetzt, für Altbau und Neubau, nach KfW- und BAFA-Standards.</p>
         </div>
 
         <div class="feature-cards">
-          <a class="fcard" href="https://sanier-fix.com/energetische-sanierung/" data-reveal>
+          <a class="fcard" href="https://sanier-fix.com/energetische-sanierung/" data-reveal="left">
             <div class="fcard__media"><img src="https://sanier-fix.com/wp-content/uploads/2026/05/Banner-3-scaled-1.webp" alt="Eingerüstetes Mehrfamilienhaus während der energetischen Sanierung" loading="lazy"></div>
             <div class="fcard__body">
               <span class="fcard__num">01</span>
               <h3>Energetische Sanierung</h3>
               <p>Effiziente Dämmung, Fenster und Haustechnik für spürbar niedrigere Energiekosten.</p>
-              <span class="fcard__more">Mehr erfahren</span>
+              <span class="fcard__more">Mehr erfahren <i aria-hidden="true">→</i></span>
             </div>
           </a>
-          <a class="fcard" href="https://sanier-fix.com/kernsanierung/" data-reveal>
+          <a class="fcard" href="https://sanier-fix.com/kernsanierung/" data-reveal="up">
             <div class="fcard__media"><img src="https://sanier-fix.com/wp-content/uploads/2026/05/Ueber-uns-2-scaled-1.webp" alt="Bauleiter mit Helm vor einem eingerüsteten Gebäude" loading="lazy"></div>
             <div class="fcard__body">
               <span class="fcard__num">02</span>
               <h3>Kernsanierung</h3>
               <p>Umfassende Gebäudesanierung – Rückbau bis zur Struktur und kompletter Neuaufbau.</p>
-              <span class="fcard__more">Mehr erfahren</span>
+              <span class="fcard__more">Mehr erfahren <i aria-hidden="true">→</i></span>
             </div>
           </a>
-          <a class="fcard" href="https://sanier-fix.com/unsere-leistungen/#Teilsanierung" data-reveal>
-            <div class="fcard__media"><img src="https://sanier-fix.com/wp-content/uploads/2026/05/Ueber-Uns-1-scaled-1.webp" alt="Zwei Sanier-Fix-Mitarbeiter besprechen Baupläne vor Ort" loading="lazy"></div>
+          <a class="fcard" href="https://sanier-fix.com/unsere-leistungen/#Teilsanierung" data-reveal="right">
+            <div class="fcard__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/DSC02280-scaled.jpg" alt="Sanier-Fix-Mitarbeiter prüft Baupläne vor Ort" loading="lazy"></div>
             <div class="fcard__body">
               <span class="fcard__num">03</span>
               <h3>Teilsanierung</h3>
               <p>Gezielte Renovierung einzelner Gebäudeteile – ideal für schrittweise Verbesserungen.</p>
-              <span class="fcard__more">Mehr erfahren</span>
+              <span class="fcard__more">Mehr erfahren <i aria-hidden="true">→</i></span>
             </div>
           </a>
         </div>
 
-        <h3 class="sublist-title" data-reveal>Teilsanierungen &amp; Gewerke</h3>
+        <h3 class="sublist-title" data-reveal="left">Teilsanierungen &amp; Gewerke</h3>
         <ul class="service-list" data-services>
           <li><a class="service" href="https://sanier-fix.com/badsanierung/" data-img="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-13-scaled.jpg">
             <span class="service__num">01</span><span class="service__title">Badsanierung</span><span class="service__desc">Moderne Badkonzepte – Komplettlösung aus einer Hand.</span><span class="service__arrow" aria-hidden="true">→</span></a></li>
@@ -255,14 +255,19 @@
             <span class="service__num">12</span><span class="service__title">Bauleitung</span><span class="service__desc">Termine, Gewerke und Abnahmen – zentral koordiniert.</span><span class="service__arrow" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
-      <div class="service-preview" data-service-preview aria-hidden="true"><img alt=""></div>
     </section>
 
     <!-- ============ WARUM SANIER FIX ============ -->
+    <!-- Big outline type divider -->
+    <section class="bigtype" aria-hidden="true" data-bigtype>
+      <div class="bigtype__row" data-bt="-1"></div>
+      <div class="bigtype__row bigtype__row--fill" data-bt="1"></div>
+    </section>
+
     <section class="why section" id="warum">
       <div class="container why__grid">
-        <div class="why__media" data-clip>
-          <img src="https://sanier-fix.com/wp-content/uploads/2024/07/DSC02463-scaled.jpg" alt="Das Sanier-Fix-Team auf einem Bagger" loading="lazy" data-parallax>
+        <div class="why__media" data-reveal="left">
+          <div class="why__frame" data-clip><img src="https://sanier-fix.com/wp-content/uploads/2024/07/DSC02463-scaled.jpg" alt="Das Sanier-Fix-Team auf einem Bagger" loading="lazy" data-parallax></div>
           <div class="why__badge">
             <b>10+</b><span>Jahre Erfahrung in der Projektdurchführung</span>
           </div>
@@ -271,19 +276,19 @@
           <p class="eyebrow" data-reveal>Warum Sanier Fix?</p>
           <h2 class="h2" data-split>Vertrauen, auf das <em>Sie bauen können.</em></h2>
           <ul class="reasons">
-            <li class="reason" data-reveal>
+            <li class="reason" data-reveal="right">
               <img src="https://sanier-fix.com/wp-content/uploads/2025/09/3.png" alt="" width="300" height="300" loading="lazy">
               <div><h3>Ein Ansprechpartner</h3><p>Für das gesamte Bauvorhaben – vom ersten Tag bis zur Übergabe.</p></div>
             </li>
-            <li class="reason" data-reveal>
+            <li class="reason" data-reveal="right">
               <img src="https://sanier-fix.com/wp-content/uploads/2025/09/1.png" alt="" width="300" height="300" loading="lazy">
               <div><h3>Qualität aus einer Hand</h3><p>Alle Schritte der Sanierung und Renovierung aus einer Hand.</p></div>
             </li>
-            <li class="reason" data-reveal>
+            <li class="reason" data-reveal="right">
               <img src="https://sanier-fix.com/wp-content/uploads/2025/09/2.png" alt="" width="300" height="300" loading="lazy">
               <div><h3>Energieberater &amp; Sachverständiger</h3><p>Enge Zusammenarbeit mit unseren Energieberatern und Bausachverständigen.</p></div>
             </li>
-            <li class="reason" data-reveal>
+            <li class="reason" data-reveal="right">
               <img src="https://sanier-fix.com/wp-content/uploads/2025/09/4.png" alt="" width="300" height="300" loading="lazy">
               <div><h3>Eingespieltes Team</h3><p>Hunderte erfolgreich umgesetzte Projekte in der Region.</p></div>
             </li>
@@ -303,7 +308,7 @@
           <p class="section-head__aside" data-reveal>Ein Mehrfamilienhaus in der Horststraße – komplett saniert. Ziehen Sie den Regler, um den Unterschied zu sehen.</p>
         </div>
 
-        <div class="compare" data-compare data-reveal>
+        <div class="compare" data-compare data-reveal="scale">
           <img class="compare__img" src="https://sanier-fix.com/wp-content/uploads/2024/07/1_Horststrasse_Nachher-NEU.png" alt="Horststraße nach der Sanierung" loading="lazy">
           <div class="compare__before" data-compare-before>
             <img class="compare__img" src="https://sanier-fix.com/wp-content/uploads/2024/07/1_Horstrasse_Vorher-NEU.png" alt="Horststraße vor der Sanierung" loading="lazy">
@@ -318,17 +323,16 @@
       <div class="gallery" data-gallery>
         <div class="gallery__head container">
           <h3 class="gallery__title" data-reveal>Einblicke aus unseren Projekten</h3>
-          <div class="gallery__bar" aria-hidden="true"><span><i data-gallery-progress></i></span></div>
         </div>
-        <div class="gallery__track" data-gallery-track>
-          <figure class="card card--wide"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-2-scaled.jpg" alt="Saniertes Mehrfamilienhaus mit neuer Fassade" loading="lazy"></div><figcaption><span>01</span> Fassade &amp; Gebäudehülle</figcaption></figure>
-          <figure class="card"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-12-scaled.jpg" alt="Ausgebautes Dachgeschoss mit Holzbalken und Dachfenster" loading="lazy"></div><figcaption><span>02</span> Dachgeschossausbau</figcaption></figure>
-          <figure class="card card--tall"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-13-scaled.jpg" alt="Neu saniertes Bad mit Dachfenster" loading="lazy"></div><figcaption><span>03</span> Badsanierung</figcaption></figure>
-          <figure class="card"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-10-scaled.jpg" alt="Heller Raum mit Glastür und Parkettboden" loading="lazy"></div><figcaption><span>04</span> Innenausbau</figcaption></figure>
-          <figure class="card card--tall"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-15-scaled.jpg" alt="Duschbad nach der Sanierung" loading="lazy"></div><figcaption><span>05</span> Sanitär</figcaption></figure>
-          <figure class="card"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-16-scaled.jpg" alt="Dachgeschoss mit sichtbaren Balken" loading="lazy"></div><figcaption><span>06</span> Holz &amp; Dach</figcaption></figure>
-          <figure class="card"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-21-scaled.jpg" alt="Renovierter Raum mit neuem Fenster" loading="lazy"></div><figcaption><span>07</span> Fenster &amp; Wände</figcaption></figure>
-          <div class="card card--end">
+        <div class="gallery__grid container">
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-2-scaled.jpg" alt="Saniertes Mehrfamilienhaus mit neuer Fassade" loading="lazy"></div><figcaption><span>01</span> Fassade &amp; Gebäudehülle</figcaption></figure>
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-12-scaled.jpg" alt="Ausgebautes Dachgeschoss mit Holzbalken und Dachfenster" loading="lazy"></div><figcaption><span>02</span> Dachgeschossausbau</figcaption></figure>
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-13-scaled.jpg" alt="Neu saniertes Bad mit Dachfenster" loading="lazy"></div><figcaption><span>03</span> Badsanierung</figcaption></figure>
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-10-scaled.jpg" alt="Heller Raum mit Glastür und Parkettboden" loading="lazy"></div><figcaption><span>04</span> Innenausbau</figcaption></figure>
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-15-scaled.jpg" alt="Duschbad nach der Sanierung" loading="lazy"></div><figcaption><span>05</span> Sanitär</figcaption></figure>
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-16-scaled.jpg" alt="Dachgeschoss mit sichtbaren Balken" loading="lazy"></div><figcaption><span>06</span> Holz &amp; Dach</figcaption></figure>
+          <figure class="card" data-reveal="scale"><div class="card__media"><img src="https://sanier-fix.com/wp-content/uploads/2024/07/Foto-21-scaled.jpg" alt="Renovierter Raum mit neuem Fenster" loading="lazy"></div><figcaption><span>07</span> Fenster &amp; Wände</figcaption></figure>
+          <div class="card card--end" data-reveal="scale">
             <p>Über 500 abgeschlossene Projekte in Landau, Karlsruhe und Mannheim.</p>
             <a class="link-arrow" href="https://sanier-fix.com/referenzen/">Alle Referenzen</a>
           </div>
@@ -349,19 +353,19 @@
 
         <ol class="steps" data-steps>
           <li class="steps__line" aria-hidden="true"><i data-steps-line></i></li>
-          <li class="step" data-step>
+          <li class="step" data-step data-reveal="right">
             <span class="step__num">01</span>
             <div><h3>Professionelle Beratung</h3><p>Wir hören zu, besichtigen Ihre Immobilie und bewerten Zustand, Potenzial und Fördermöglichkeiten.</p></div>
           </li>
-          <li class="step" data-step>
+          <li class="step" data-step data-reveal="right">
             <span class="step__num">02</span>
             <div><h3>Planung &amp; Analyse</h3><p>Konzept, Energieberatung und ein transparentes Angebot – abgestimmt auf Ihre Wünsche und Ihr Budget.</p></div>
           </li>
-          <li class="step" data-step>
+          <li class="step" data-step data-reveal="right">
             <span class="step__num">03</span>
             <div><h3>Fachpersonal vor Ort</h3><p>Unser eingespieltes Team setzt alle Gewerke koordiniert um – mit regelmäßigen Updates für Sie.</p></div>
           </li>
-          <li class="step" data-step>
+          <li class="step" data-step data-reveal="right">
             <span class="step__num">04</span>
             <div><h3>Abnahme &amp; Übergabe</h3><p>Gemeinsame Abnahme, vollständige Dokumentation und Betreuung auch nach der Übergabe.</p></div>
           </li>
@@ -376,15 +380,15 @@
         <div class="contact__copy">
           <p class="script" data-reveal>Deine Baustelle. Unsere Leidenschaft.</p>
           <h2 class="display display--contact" data-split>Lassen Sie uns <em>Ihr Projekt starten.</em></h2>
-          <dl class="contact__details" data-reveal>
-            <div><dt>Telefon</dt><dd><a href="tel:+4963419697717">06341 9697717</a></dd></div>
-            <div><dt>E-Mail</dt><dd><a href="mailto:info@sanier-fix.com">info@sanier-fix.com</a></dd></div>
-            <div><dt>Adresse</dt><dd>Waffenstraße 14<br>76829 Landau in der Pfalz</dd></div>
-            <div><dt>Region</dt><dd>Landau · Karlsruhe · Mannheim</dd></div>
+          <dl class="contact__details" data-reveal="left">
+            <div><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span><dt>Telefon</dt><dd><a href="tel:+4963419697717">06341 9697717</a></dd></div>
+            <div><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span><dt>E-Mail</dt><dd><a href="mailto:info@sanier-fix.com">info@sanier-fix.com</a></dd></div>
+            <div><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><dt>Adresse</dt><dd>Waffenstraße 14<br>76829 Landau in der Pfalz</dd></div>
+            <div><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></span><dt>Region</dt><dd>Landau · Karlsruhe · Mannheim</dd></div>
           </dl>
         </div>
 
-        <form class="form" data-form novalidate data-reveal>
+        <form class="form" data-form novalidate data-reveal="right">
           <h3 class="form__title">Kostenlose Anfrage</h3>
           <div class="field">
             <input id="f-name" name="name" type="text" autocomplete="name" placeholder=" " required>
@@ -452,9 +456,9 @@
           </div>
           <div>
             <h4>Kontakt</h4>
-            <a href="tel:+4963419697717">06341 9697717</a>
-            <a href="mailto:info@sanier-fix.com">info@sanier-fix.com</a>
-            <span>Waffenstraße 14<br>76829 Landau i. d. Pfalz</span>
+            <a class="fi" href="tel:+4963419697717"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>06341 9697717</a>
+            <a class="fi" href="mailto:info@sanier-fix.com"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>info@sanier-fix.com</a>
+            <span class="fi"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><b>Waffenstraße 14<br>76829 Landau i. d. Pfalz</b></span>
           </div>
         </nav>
       </div>
@@ -466,7 +470,6 @@
           <a href="https://sanier-fix.com/datenschutz/">Datenschutz</a>
           <a href="https://sanier-fix.com/barrierefreiheit/">Barrierefreiheit</a>
         </span>
-        <a href="#top" class="link-arrow link-arrow--up">Nach oben</a>
       </div>
     </div>
   </footer>
@@ -476,6 +479,8 @@
   <script src="js/vendor/ScrollTrigger.min.js?v=3.15.1" defer></script>
   <script src="js/vendor/Observer.min.js?v=3.15.1" defer></script>
   <script src="js/vendor/ScrollToPlugin.min.js?v=3.15.1" defer></script>
-  <script src="js/main.js?v=mht1" defer></script>
+  <script src="js/main.js?v=p6" defer></script>
+  <script src="js/premium.js?v=p6" defer></script>
+  <script src="js/wow.js?v=p6" defer></script>
 </body>
 </html>

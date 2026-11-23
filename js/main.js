@@ -5,7 +5,7 @@
 (() => {
   'use strict';
 
-  const FRAME_COUNT = 453;              // frames in the source film (30 fps)
+  const FRAME_COUNT = 155;              // frames in the source film (30 fps)
   const SEG = 10;                       // timeline units per step
 
   const root = document.documentElement;
@@ -74,9 +74,9 @@
   // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
   const FILES = {
     // Large / high-density screens get 2560×1440, everything else 1920×1080 (both mastered from the 4K film)
-    land: { preview: 'assets/video/film-preview.mp4?v=mht1',
-            hd: innerWidth * Math.min(devicePixelRatio || 1, 2) >= 2200 ? 'assets/video/film-1440.mp4?v=mht1' : 'assets/video/film-1080.mp4?v=mht1' },
-    port: { preview: 'assets/video/film-portrait-preview.mp4?v=mht1', hd: 'assets/video/film-portrait.mp4?v=mht1' },
+    land: { preview: 'assets/video/film-preview.mp4?v=nv1',
+            hd: 'assets/video/film-1080.mp4?v=nv1' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4?v=nv1', hd: 'assets/video/film-portrait.mp4?v=nv1' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
   let currentKey = pickKey();
@@ -239,6 +239,7 @@
         start: 'top top',
         end: () => '+=' + Math.round(innerHeight * STEP_COUNT),
         pin: stage,
+        refreshPriority: 10,
         scrub: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
@@ -282,16 +283,14 @@
      Preloader: download the whole film first (so every seek is instant)
      ========================================================================== */
   const loaderCount = $('[data-loader-count]');
-  const loaderBar = $('[data-loader-bar]');
+  const loaderEl = $('.loader');
   let shown = 0;
   let started = false;
 
-  const loaderRing = $('[data-loader-ring]');
-  const RING = 2 * Math.PI * 26;
   function setLoader(p) {
     shown = Math.max(shown, Math.min(100, Math.round(p * 100)));
     loaderCount.textContent = shown;
-    if (loaderRing) loaderRing.style.strokeDashoffset = String(RING * (1 - shown / 100));
+    loaderEl.style.setProperty('--p', shown / 100);
   }
 
   function fetchBlob(url, onProgress) {
@@ -338,8 +337,10 @@
         initPage();
       },
     })
-      .to('.loader__inner', { autoAlpha: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' })
-      .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'expo.inOut' }, '-=0.1')
+      .to('.loader__inner, .loader__big, .loader__label', { autoAlpha: 0, y: -18, duration: 0.5, ease: 'power2.in' })
+      .to('.loader__panel--t', { yPercent: -101, duration: 1.15, ease: 'expo.inOut' }, '-=0.05')
+      .to('.loader__panel--b', { yPercent: 101, duration: 1.15, ease: 'expo.inOut' }, '<')
+      .to('.loader__grid', { autoAlpha: 0, duration: 0.4 }, '<')
       .from(introWords, { y: (i, el) => el.offsetHeight * 1.15, stagger: 0.08, duration: 1.4, ease: 'expo.out' }, '-=0.5')
       .from(introSide, { autoAlpha: 0, y: 16, stagger: 0.1, duration: 1, ease: 'power3.out' }, '-=1.1')
       .fromTo('.nav', { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, '-=1');
@@ -361,15 +362,6 @@
      ========================================================================== */
   function initPage() {
     buildFilm();
-    initReveals();
-    initStatement();
-    initServices();
-    initWhy();
-    initCompare();
-    initGallery();
-    initProcess();
-    initFooter();
-    initForm();
     initNav();             // last: all pins exist, so positions are correct
     ScrollTrigger.refresh();
     initStepper();
@@ -441,222 +433,6 @@
         trigger: sec, start: 'top 50%', end: 'bottom 50%',
         onToggle: (self) => link.classList.toggle('is-active', self.isActive),
       });
-    });
-  }
-
-  /* ---------- Generic reveals ---------- */
-  function initReveals() {
-    $$('[data-split]').filter((el) => !el.closest('.film')).forEach((el) => {
-      const words = splitWords(el);
-      if (reduceMotion) return;
-      gsap.from(words, {
-        yPercent: 115, duration: 1.2, stagger: 0.06, ease: 'expo.out',
-        scrollTrigger: { trigger: el, start: 'top 86%', once: true },
-      });
-    });
-    if (reduceMotion) return;
-    ScrollTrigger.batch('[data-reveal]', {
-      start: 'top 90%', once: true,
-      onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08, ease: 'power3.out', overwrite: true }),
-    });
-    gsap.fromTo('[data-band-img]', { scale: 1.12 }, {
-      scale: 1, ease: 'none',
-      scrollTrigger: { trigger: '[data-band]', start: 'top bottom', end: 'bottom top', scrub: true },
-    });
-    $$('[data-parallax]').forEach((im) => {
-      gsap.fromTo(im, { yPercent: -18 }, {
-        yPercent: 0, ease: 'none',
-        scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
-      });
-    });
-  }
-
-  /* ---------- Statement + counters ---------- */
-  function initStatement() {
-    const el = $('[data-words]');
-    const words = splitWords(el);
-    if (!reduceMotion) {
-      gsap.fromTo(words, { opacity: 0.16 }, {
-        opacity: 1, stagger: 0.1, ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 55%', scrub: 0.5 },
-      });
-    }
-    $$('[data-count]').forEach((n) => {
-      if (reduceMotion) return;
-      const endVal = parseFloat(n.dataset.count);
-      const dec = Number(n.dataset.decimals || 0);
-      const obj = { v: 0 };
-      n.textContent = (0).toFixed(dec);
-      gsap.to(obj, {
-        v: endVal, duration: 2.2, ease: 'power3.out',
-        scrollTrigger: { trigger: n, start: 'top 92%', once: true },
-        onUpdate: () => { n.textContent = obj.v.toFixed(dec); },
-      });
-    });
-  }
-
-  /* ---------- Services: image preview follows the cursor ---------- */
-  function initServices() {
-    const preview = $('[data-service-preview]');
-    const img = $('img', preview);
-    const list = $('[data-services]');
-    const rows = $$('.service', list);
-    if (!reduceMotion) {
-      gsap.from(rows, {
-        autoAlpha: 0, y: 24, duration: 0.9, stagger: 0.05, ease: 'power3.out',
-        scrollTrigger: { trigger: list, start: 'top 85%', once: true },
-      });
-    }
-    if (!matchMedia('(hover: hover) and (min-width: 861px)').matches || reduceMotion) return;
-
-    let preloaded = false;
-    const preload = () => { if (preloaded) return; preloaded = true; rows.forEach((r) => { const p = new Image(); p.src = r.dataset.img; }); };
-    ScrollTrigger.create({ trigger: list, start: 'top 140%', once: true, onEnter: preload });
-
-    const xTo = gsap.quickTo(preview, 'x', { duration: 0.6, ease: 'power3' });
-    const yTo = gsap.quickTo(preview, 'y', { duration: 0.6, ease: 'power3' });
-    gsap.set(preview, { xPercent: -50, yPercent: -50, x: innerWidth / 2, y: innerHeight / 2, scale: 0.85 });
-    list.addEventListener('mousemove', (e) => { xTo(e.clientX + 40); yTo(e.clientY); });
-    rows.forEach((row) => {
-      row.addEventListener('mouseenter', () => {
-        if (img.getAttribute('src') !== row.dataset.img) {
-          img.src = row.dataset.img;
-          gsap.fromTo(img, { scale: 1.15 }, { scale: 1, duration: 0.8, ease: 'power3.out' });
-        }
-        gsap.to(preview, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'power3.out' });
-      });
-    });
-    list.addEventListener('mouseleave', () => gsap.to(preview, { autoAlpha: 0, scale: 0.85, duration: 0.45, ease: 'power3.out' }));
-    addEventListener('scroll', () => { if (!list.matches(':hover')) gsap.to(preview, { autoAlpha: 0, duration: 0.3 }); }, { passive: true });
-  }
-
-  /* ---------- Why: clip reveal ---------- */
-  function initWhy() {
-    if (reduceMotion) return;
-    const media = $('[data-clip]');
-    gsap.fromTo(media, { clipPath: 'inset(14% 12% 14% 12% round 6px)' }, {
-      clipPath: 'inset(0% 0% 0% 0% round 6px)', ease: 'none',
-      scrollTrigger: { trigger: media, start: 'top 90%', end: 'top 30%', scrub: 0.6 },
-    });
-    gsap.from('.why__badge', {
-      autoAlpha: 0, y: 30, duration: 1, ease: 'power3.out',
-      scrollTrigger: { trigger: media, start: 'top 50%', once: true },
-    });
-  }
-
-  /* ---------- Vorher / Nachher slider ---------- */
-  function initCompare() {
-    const box = $('[data-compare]');
-    const range = $('[data-compare-range]');
-    const set = (v) => box.style.setProperty('--pos', v + '%');
-    range.addEventListener('input', () => set(range.value));
-    set(range.value);
-    if (reduceMotion) return;
-    const o = { v: 88 };
-    set(o.v);
-    gsap.to(o, {
-      v: 50, duration: 1.8, ease: 'power3.inOut', delay: 0.2,
-      scrollTrigger: { trigger: box, start: 'top 70%', once: true },
-      onUpdate: () => { set(o.v); range.value = o.v; },
-    });
-  }
-
-  /* ---------- Gallery: pinned horizontal scroll on desktop ---------- */
-  function initGallery() {
-    const pinEl = $('[data-gallery]');
-    const track = $('[data-gallery-track]');
-    const bar = $('[data-gallery-progress]');
-    gsap.matchMedia().add('(min-width: 861px)', () => {
-      const distance = () => Math.max(0, track.scrollWidth - innerWidth);
-      const horizontal = gsap.to(track, {
-        x: () => -distance(), ease: 'none',
-        scrollTrigger: {
-          trigger: pinEl, start: 'top top', end: () => '+=' + distance(),
-          pin: true, scrub: 0.7, invalidateOnRefresh: true,
-          onUpdate: (self) => gsap.set(bar, { scaleX: self.progress }),
-        },
-      });
-      if (reduceMotion) return;
-      $$('.card__media img', track).forEach((im) => {
-        gsap.fromTo(im, { xPercent: -5 }, {
-          xPercent: 5, ease: 'none',
-          scrollTrigger: { trigger: im.parentElement, containerAnimation: horizontal, start: 'left right', end: 'right left', scrub: true },
-        });
-      });
-    });
-    gsap.matchMedia().add('(max-width: 860px)', () => {
-      $$('.card__media img', track).forEach((im) => gsap.set(im, { scale: 1 }));
-    });
-  }
-
-  /* ---------- Process ---------- */
-  function initProcess() {
-    const steps = $('[data-steps]');
-    gsap.fromTo('[data-steps-line]', { scaleY: 0 }, {
-      scaleY: 1, ease: 'none',
-      scrollTrigger: { trigger: steps, start: 'top 65%', end: 'bottom 65%', scrub: 0.4 },
-    });
-    $$('[data-step]', steps).forEach((step) => {
-      ScrollTrigger.create({
-        trigger: step, start: 'top 70%',
-        onEnter: () => step.classList.add('is-on'),
-        onLeaveBack: () => step.classList.remove('is-on'),
-      });
-      if (reduceMotion) return;
-      gsap.from(step.children, {
-        autoAlpha: 0, y: 30, stagger: 0.08, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: step, start: 'top 88%', once: true },
-      });
-    });
-  }
-
-  /* ---------- Footer ---------- */
-  function initFooter() {
-    const yearEl = $('[data-year]');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-    const word = $('[data-footer-word]');
-    word.innerHTML = word.textContent.split('').map((c) => `<span class="w"><span class="w__i">${c === ' ' ? '&nbsp;' : c}</span></span>`).join('');
-    if (reduceMotion) return;
-    gsap.from($$('.w__i', word), {
-      yPercent: 105, stagger: 0.04, duration: 1.3, ease: 'expo.out',
-      scrollTrigger: { trigger: word, start: 'top 95%', once: true },
-    });
-  }
-
-  /* ---------- Contact form ---------- */
-  function initForm() {
-    const form = $('[data-form]');
-    const status = $('[data-form-status]');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      let ok = true;
-      $$('.field', form).forEach((f) => {
-        const input = $('input, textarea', f);
-        if (!input.required) return;
-        const valid = input.checkValidity() && input.value.trim() !== '';
-        f.classList.toggle('is-invalid', !valid);
-        if (!valid) ok = false;
-      });
-      if (!ok) { status.textContent = 'Bitte füllen Sie die markierten Felder aus.'; return; }
-
-      const data = new FormData(form);
-      const endpoint = form.dataset.endpoint; // e.g. data-endpoint="https://formspree.io/f/…"
-      if (endpoint) {
-        status.textContent = 'Wird gesendet…';
-        try {
-          const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-          if (!res.ok) throw new Error(res.statusText);
-          form.reset();
-          status.textContent = 'Vielen Dank! Wir melden uns schnellstmöglich bei Ihnen.';
-        } catch (err) {
-          status.textContent = 'Leider ist ein Fehler aufgetreten. Bitte schreiben Sie an info@sanier-fix.com.';
-        }
-        return;
-      }
-      const subject = encodeURIComponent(`Projektanfrage – ${data.get('type')}`);
-      const body = encodeURIComponent(`Name: ${data.get('name')}\nE-Mail: ${data.get('email')}\nTelefon: ${data.get('phone') || '-'}\nProjekt: ${data.get('type')}\n\n${data.get('message')}`);
-      window.location.href = `mailto:info@sanier-fix.com?subject=${subject}&body=${body}`;
-      status.textContent = 'Ihr E-Mail-Programm wird geöffnet…';
     });
   }
 })();
