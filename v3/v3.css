@@ -402,3 +402,95 @@ a.x-mini:hover { border-color: rgba(111,220,255,.5); background: rgba(5,165,227,
 @media (max-width: 1100px) { .b--cta { grid-column: span 2; } }
 @media (max-width: 860px) { .scard__media::after { background: linear-gradient(180deg, transparent 50%, rgba(6,32,80,.96)); } }
 @media (max-width: 600px) { .b--cta { grid-column: auto; } }
+
+/* ==========================================================================
+   BRAND ALIGNMENT with sanier-fix.com
+   Headings: IBM Plex Sans 700 · Body: Arial · Script: Yellowtail
+   Colours: text #222, navy #002458, blue #05A5E3
+   ========================================================================== */
+.x {
+  --x-ink: #222222; --x-dim: #4a4f58; --x-faint: #7a808a;
+  --x-cyan: #05a5e3; --x-blue: #05a5e3;
+  --x-grad: linear-gradient(#05a5e3, #05a5e3);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.x h1, .x h2, .x h3, .x-title, .x-stat b, .b__big, .b__rating b, .scard h3, .pstep h3, .x-badge b, .x-btn, .x-mini b, .x-footer__word { font-family: var(--sans); }
+.x-title { font-weight: 700; letter-spacing: -.03em; }
+.x-grad, .x-grad .w__i, .x-about__text .hl .w__i { animation: none; }
+.x-dark {
+  --x-ink: #ffffff; --x-dim: rgba(255,255,255,.74); --x-faint: rgba(255,255,255,.5);
+  --x-cyan: #05a5e3; --x-grad: linear-gradient(#05a5e3, #05a5e3);
+  background: radial-gradient(110% 80% at 50% 0%, #0a3477 0%, #002458 50%, #001a42 100%);
+}
+.x-footer { background: #001634; }
+.scard { background: linear-gradient(160deg, #0a3477, #002458 60%); }
+.scard__media::after { background: linear-gradient(90deg, transparent 55%, rgba(0,36,88,.97)); }
+.b--cta { background: radial-gradient(120% 140% at 100% 0%, #2fb9ee 0%, #05a5e3 40%, #0a6fb0 75%, #002458 120%); }
+
+/* labels: Yellowtail script like the main site */
+.x-label { font-family: var(--script); font-size: clamp(24px, 2vw, 32px); letter-spacing: 0; text-transform: none; color: #05a5e3; margin: 0 0 6px; line-height: 1.2; }
+.x-dark .x-label { color: #4cc3f1; }
+.x-rule { display: block; width: 80px; height: 1px; background: #b9bec6; margin: 26px 0 0; }
+.x-dark .x-rule { background: rgba(255,255,255,.35); }
+.x-head--center .x-rule { margin-left: auto; margin-right: auto; }
+.x-ba__head .x-label { margin-bottom: 2px; }
+
+/* brand buttons */
+.x-btn { border-radius: 6px; background: #05a5e3; box-shadow: 0 18px 40px -20px rgba(5,165,227,.9); font-family: Arial, Helvetica, sans-serif; font-weight: 700; }
+.x-btn::before { content: ""; position: absolute; inset: 0; background: #002458; transform: translateY(101%); transition: transform .5s var(--ease); z-index: 0; }
+.x-btn > * { position: relative; z-index: 1; }
+.x-btn:hover::before { transform: none; }
+.x-btn i { border-radius: 4px; }
+.x-btn--light { background: #fff; color: #002458; }
+.x-btn--light::before { background: #002458; }
+.x-btn--light:hover { color: #fff; }
+.x-btn--light:hover i { background: rgba(255,255,255,.15); color: #fff; }
+.x-btn--brand { width: auto; height: 58px; padding: 0 10px 0 26px; margin-top: 34px; }
+.x-dark .x-btn::before { background: #fff; }
+.x-dark .x-btn:hover { color: #002458; }
+
+/* ==========================================================================
+   Über uns (V3)
+   ========================================================================== */
+.x-about { position: relative; padding: clamp(110px, 13vw, 200px) 0 clamp(90px, 11vw, 160px); }
+.x-about__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 110px); align-items: center; }
+.x-about .x-title { font-size: clamp(44px, 5.4vw, 88px); }
+.x-about__text { font-size: clamp(16px, 1.2vw, 18.5px); line-height: 1.8; color: var(--x-ink); margin: 28px 0 0; max-width: 36rem; }
+.x-about__text .w__i { color: var(--x-ink); }
+.x-about__text .hl .w__i { color: #05a5e3; background: none; -webkit-background-clip: border-box; background-clip: border-box; font-weight: 700; }
+.x-checks { list-style: none; margin: 30px 0 0; padding: 0; display: grid; gap: 14px; }
+.x-checks li { display: flex; align-items: center; gap: 14px; font-size: 16.5px; color: var(--x-ink); }
+.x-checks svg { flex: none; width: 30px; height: 30px; padding: 3px; border-radius: 50%; background: #eef2f6; fill: none; stroke: #222; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: background .4s, stroke .4s; }
+.x-checks svg path { stroke-dasharray: 16; stroke-dashoffset: 0; }
+.x-checks li.is-on svg { background: #05a5e3; stroke: #fff; }
+
+.x-collage { position: relative; display: grid; grid-template-columns: 1.08fr .92fr; gap: 22px; align-items: start; padding: 30px 0 60px; }
+.x-collage__img { margin: 0; border-radius: 14px; overflow: hidden; background: #dfe6ee; box-shadow: 0 40px 80px -40px rgba(0,36,88,.55); will-change: transform; }
+.x-collage__img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); will-change: transform; }
+.x-collage__img--a { aspect-ratio: 3 / 4.3; }
+.x-collage__img--b { aspect-ratio: 3 / 4.3; margin-top: 70px; }
+.x-collage__ring { position: absolute; z-index: -1; width: 70%; aspect-ratio: 1; right: -12%; top: -6%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(5,165,227,.18) 0 1.5px, transparent 2px) 0 0 / 16px 16px; mask-image: radial-gradient(circle, #000 40%, transparent 70%); -webkit-mask-image: radial-gradient(circle, #000 40%, transparent 70%); }
+.x-badge { position: absolute; z-index: 3; display: flex; flex-direction: column; gap: 2px; padding: 18px 22px; border-radius: 10px; box-shadow: 0 26px 50px -22px rgba(0,36,88,.6); }
+.x-badge b { font-size: clamp(34px, 3vw, 48px); line-height: 1; letter-spacing: -.04em; font-weight: 700; }
+.x-badge > span { font-size: 13.5px; font-weight: 700; }
+.x-badge--blue { left: -26px; bottom: 26px; background: #05a5e3; color: #fff; }
+.x-badge--white { right: -18px; top: 0; background: rgba(255,255,255,.92); color: #002458; backdrop-filter: blur(10px); border: 1px solid rgba(0,36,88,.08); }
+.x-badge--white b { color: #05a5e3; }
+.x-about .x-stats { margin-top: clamp(60px, 7vw, 110px); }
+
+@media (max-width: 980px) {
+  .x-about__grid { grid-template-columns: 1fr; }
+  .x-collage { max-width: 620px; }
+}
+@media (max-width: 600px) {
+  .x-collage { gap: 12px; padding-bottom: 40px; }
+  .x-collage__img--b { margin-top: 44px; }
+  .x-badge { padding: 12px 14px; }
+  .x-badge--blue { left: -6px; bottom: 6px; }
+  .x-badge--white { right: -6px; }
+  .x-btn--brand { width: 100%; }
+}
+/* no code-style type: small labels use the site's Arial */
+.v3 { --mono: Arial, Helvetica, sans-serif; }
+.x-stat > span, .b__tag, .scard__num, .scard__more, .ba__tag, .ba__meter, .x-ba__note, .x-link, .x-mini span, .x-form__top, .x-chips legend, .x-footer__nav h4, .pstep__node, .pin em, .b--map h3 { font-weight: 700; letter-spacing: .04em; }

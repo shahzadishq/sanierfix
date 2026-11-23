@@ -41,6 +41,37 @@
       }
     }
 
+    /* ---------- über uns: collage reveal, parallax, badges, checks ---------- */
+    const collage = $('[data-x-collage]');
+    if (collage) {
+      const figs = $$('.x-collage__img', collage);
+      const checks = $$('[data-x-checks] li');
+      if (RM) { checks.forEach((li) => li.classList.add('is-on')); } else {
+        gsap.fromTo(figs, { clipPath: 'inset(100% 0% 0% 0% round 14px)' }, {
+          clipPath: 'inset(0% 0% 0% 0% round 14px)', duration: 1.5, stagger: 0.18, ease: 'expo.out',
+          scrollTrigger: { trigger: collage, start: 'top 78%', once: true },
+        });
+        figs.forEach((f) => {
+          gsap.fromTo($('img', f), { scale: 1.3 }, { scale: 1.12, duration: 1.8, ease: 'expo.out', scrollTrigger: { trigger: collage, start: 'top 78%', once: true } });
+          gsap.fromTo(f, { y: () => -Number(f.dataset.xSpeed) * 4 }, {
+            y: () => Number(f.dataset.xSpeed) * 4, ease: 'none',
+            scrollTrigger: { trigger: collage, start: 'top bottom', end: 'bottom top', scrub: true },
+          });
+        });
+        gsap.from('[data-x-badge]', {
+          opacity: 0, scale: 0.6, y: 30, duration: 1, stagger: 0.2, ease: 'back.out(2)',
+          scrollTrigger: { trigger: collage, start: 'top 60%', once: true },
+        });
+        gsap.to('[data-x-badge]', { y: -10, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: 0.8, delay: 1.5 });
+        gsap.from(checks, {
+          opacity: 0, x: -24, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+          scrollTrigger: { trigger: '[data-x-checks]', start: 'top 85%', once: true },
+          onStart: () => checks.forEach((li, i) => setTimeout(() => li.classList.add('is-on'), 450 + i * 180)),
+        });
+        $$('[data-x-checks] path').forEach((p) => gsap.fromTo(p, { strokeDashoffset: 16 }, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: p, start: 'top 85%', once: true }, delay: 0.5 }));
+      }
+    }
+
     /* ---------- counters ---------- */
     $$('[data-x-count]').forEach((n) => {
       const end = parseFloat(n.dataset.xCount);
