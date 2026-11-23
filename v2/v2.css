@@ -19,8 +19,8 @@
   .film__shade {
     z-index: 1;
     background:
-      linear-gradient(90deg, rgba(0,22,52,.74) 0%, rgba(0,22,52,.5) 34%, rgba(0,22,52,.08) 66%, rgba(0,22,52,.18) 100%),
-      linear-gradient(180deg, rgba(0,22,52,.42) 0%, rgba(0,22,52,0) 22%);
+      linear-gradient(90deg, rgba(0,22,52,.88) 0%, rgba(0,22,52,.68) 34%, rgba(0,22,52,.3) 66%, rgba(0,22,52,.42) 100%),
+      linear-gradient(180deg, rgba(0,22,52,.55) 0%, rgba(0,22,52,0) 24%);
   }
 
   .film__video, .film__poster {

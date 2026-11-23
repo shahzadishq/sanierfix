@@ -277,3 +277,10 @@ em .wi{ background: linear-gradient(100deg, var(--blue), #4fd0ff 60%, var(--blue
 .footer__nav .fi .ci svg{ width: 17px; height: 17px; }
 .footer__nav a.fi:hover .ci{ background: var(--blue); color: #fff; }
 @media (min-width: 1001px) and (max-width: 1199px){.fcard p{ min-height: 6.4em; }}
+
+/* tablet / landscape: steps are a single column (the old two-column grid pushed the second column off-screen) */
+.steps{ grid-template-columns: minmax(0, 1fr); }
+
+/* no sideways scroll from entrance animations; tablets/landscape use the vertical entrance */
+html, body{ overflow-x: clip; }
+@media (max-width: 1100px){.js [data-reveal="left"], .js [data-reveal="right"]{ transform: translateX(0) translateY(36px); }}
