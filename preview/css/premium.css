@@ -117,17 +117,17 @@ em .wi{ background: linear-gradient(100deg, var(--blue), #4fd0ff 60%, var(--blue
 .fcard__media img{ width: 100%; height: 100%; object-fit: cover; transition: scale 1.4s var(--ease), filter .8s; }
 .fcard:hover .fcard__media img{ scale: 1.09; }
 .fcard__media::after{ content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,22,52,.94) 8%, rgba(0,36,88,.35) 52%, rgba(0,22,52,.15)); transition: opacity .6s; }
-.fcard__body{ position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: clamp(22px, 2.4vw, 34px); }
-.fcard__num{ position: absolute; left: clamp(22px, 2.4vw, 34px); top: clamp(20px, 2vw, 30px); font-size: clamp(46px, 4.6vw, 74px); font-weight: 600; letter-spacing: -.04em; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.75); transition: color .5s, -webkit-text-stroke-color .5s; }
+.fcard::before{ content: "Hauptleistung"; position: absolute; right: clamp(16px, 1.8vw, 24px); top: clamp(18px, 2vw, 28px); z-index: 2; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #fff; }
+.fcard__body{ position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; flex-direction: column; gap: 10px; padding: clamp(20px, 2vw, 28px); border-radius: calc(var(--r-lg) - 8px); background: rgba(0,22,52,.5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); transition: translate .7s var(--ease), background .5s, border-color .5s, box-shadow .6s; }
+.fcard:hover .fcard__body{ translate: 0 -8px; background: rgba(0,36,88,.62); border-color: rgba(5,165,227,.8); box-shadow: 0 0 0 1px rgba(5,165,227,.4), 0 30px 60px -20px rgba(5,165,227,.45); }
+.fcard__num{ position: static; font-size: clamp(34px, 3vw, 46px); font-weight: 600; letter-spacing: -.03em; line-height: 1; color: transparent; -webkit-text-stroke: 1.2px rgba(255,255,255,.85); transition: color .5s, -webkit-text-stroke-color .5s; }
 .fcard:hover .fcard__num{ color: var(--blue); -webkit-text-stroke-color: var(--blue); }
-.fcard h3{ margin: 0; font-size: clamp(24px, 2.4vw, 34px); letter-spacing: -.025em; color: #fff; }
-.fcard p{ margin: 0; max-width: 34ch; color: rgba(255,255,255,.85); max-height: 0; opacity: 0; transform: translateY(12px); transition: max-height .7s var(--ease), opacity .6s, transform .7s var(--ease); }
-.fcard:hover p, .fcard:focus-visible p{ max-height: 120px; opacity: 1; transform: none; }
-.fcard__more{ margin-top: 6px; display: inline-flex; align-items: center; gap: 12px; font-weight: 600; color: #fff; }
+.fcard h3{ margin: 0; font-size: clamp(23px, 2.2vw, 32px); letter-spacing: -.025em; color: #fff; }
+.fcard p{ margin: 0; max-width: 36ch; color: rgba(255,255,255,.86); }
+.fcard__more{ margin-top: 4px; display: inline-flex; align-items: center; gap: 12px; font-weight: 600; color: #fff; }
 .fcard__more i{ display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--blue); font-style: normal; transition: transform .5s var(--ease), background .4s; }
 .fcard:hover .fcard__more i{ transform: translateX(8px) rotate(-45deg); background: #fff; color: var(--navy); }
-@media (hover: none){.fcard p{ max-height: none; opacity: 1; transform: none; }}
-@media (max-width: 900px){.feature-cards{ grid-template-columns: 1fr; }.fcard{ aspect-ratio: 4/3.4; }}
+@media (max-width: 900px){.feature-cards{ grid-template-columns: 1fr; }.fcard{ aspect-ratio: 4/4.4; }}
 
 .service-list{ list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.4vw, 20px); }
 .service-list li{ display: flex; }

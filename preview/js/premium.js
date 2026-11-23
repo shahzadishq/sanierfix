@@ -75,6 +75,7 @@
 
   // ---------- Feature cards: stagger in + 3D tilt ----------
   $$('.fcard').forEach((c) => {
+    ScrollTrigger.create({ trigger: c, start: 'top 80%', once: true, onEnter: () => gsap.from($$('.fcard__body > *', c), { y: 36, opacity: 0, duration: 1, stagger: .12, delay: .35, ease: 'power3.out' }) });
     if (!finePointer) return;
     const rx = gsap.quickTo(c, 'rotationX', { duration: .6 }), ry = gsap.quickTo(c, 'rotationY', { duration: .6 });
     c.addEventListener('pointermove', (e) => { const r = c.getBoundingClientRect(); ry(((e.clientX - r.left) / r.width - .5) * 7); rx(((e.clientY - r.top) / r.height - .5) * -7); });
