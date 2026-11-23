@@ -65,3 +65,4 @@ Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`)
 Built around *Modern Residence Transformation* (4K, 198 frames), motion-interpolated to 60 fps (393 frames) so slow, cinematic scrolling stays fluid.
 Five scenes stop at frames 88, 152, 216, 270 and 392 of the 60 fps film. Each step travels 2.2–3.1 s with sine easing and a soft camera lean-in between rooms.
 Files: `v3/index.html`, `v3/main-v3.js`, `v3/assets/video/*`.
+V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/sections-v3.js` (manifest scrub, bento with tilt/spotlight, stacking service cards, pinned before/after scan using `v3/assets/img/vorher.webp` + `nachher.webp`, drawn process path, kinetic gallery rows, glass contact form, light-filled footer wordmark).

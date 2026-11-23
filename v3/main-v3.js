@@ -367,14 +367,8 @@
      ========================================================================== */
   function initPage() {
     buildFilm();
-    initReveals();
-    initStatement();
-    initServices();
-    initWhy();
-    initCompare();
-    initGallery();
-    initProcess();
-    initFooter();
+    // V3: every section below the hero is driven by sections-v3.js
+    if (window.SFSections) window.SFSections.init({ splitWords, reduceMotion });
     initForm();
     initNav();             // last: all pins exist, so positions are correct
     ScrollTrigger.refresh();
