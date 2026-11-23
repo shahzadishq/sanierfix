@@ -118,7 +118,7 @@
   // Scrub loop: ease towards the target time, one seek at a time.
   (function loop() {
     const target = (state.frame / (FRAME_COUNT - 1)) * duration;
-    cur += (target - cur) * (reduceMotion ? 1 : 0.24);
+    cur += (target - cur) * (reduceMotion ? 1 : 0.3);
     if (Math.abs(target - cur) < 0.002) cur = target;
     if (!video.paused && video.dataset.primed) { try { video.pause(); } catch (e) {} }
     if (!inflight && video.readyState >= 2 && Math.abs(cur - video.currentTime) > 0.008) {
@@ -239,7 +239,7 @@
         start: 'top top',
         end: () => '+=' + Math.round(innerHeight * STEP_COUNT),
         pin: stage,
-        scrub: true,
+        scrub: 0.6,                 // smooth catch-up (Bath-Studio feel) instead of raw 1:1
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => updateHud(self.progress),
@@ -372,7 +372,10 @@
     initForm();
     initNav();             // last: all pins exist, so positions are correct
     ScrollTrigger.refresh();
-    initStepper();
+    // Native free-scrolling (Bath-Studio style): the pinned film above is scrubbed
+    // directly by the browser's own scroll. No wheel/touch hijack, no forced
+    // scene-snapping — the visitor stays in full control and it never feels "stuck".
+    // (initStepper / the Observer that grabbed the wheel is intentionally not called.)
 
     let resizeTimer;
     addEventListener('resize', () => {
