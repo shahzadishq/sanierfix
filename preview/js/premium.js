@@ -125,8 +125,6 @@
 
   // ---------- Contact + footer ----------
   gsap.fromTo('.contact__bg img', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.contact', start: 'top bottom', end: 'bottom top', scrub: true } });
-  const word = $('[data-footer-word]');
-  if (word) gsap.from(word, { yPercent: 40, opacity: 0, duration: 1.6, ease: 'power4.out', scrollTrigger: { trigger: word, start: 'top 98%', once: true } });
 
   // ---------- Magnetic buttons ----------
   if (finePointer) $$('[data-magnetic]').forEach((b) => {
