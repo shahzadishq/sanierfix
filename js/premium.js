@@ -83,7 +83,7 @@
   });
 
   // ---------- Services: tiles get their hover image from data-img ----------
-  $$('.service').forEach((s) => { s.style.setProperty('--img', `url("${s.dataset.img}")`); });
+  $$('.service').forEach((s) => { s.style.setProperty('--img', `url("${new URL(s.dataset.img, document.baseURI).href}")`); });
   ScrollTrigger.batch('.service', { start: 'top 92%', once: true, onEnter: (els) => gsap.from(els, { opacity: 0, y: 50, scale: .94, duration: 1, stagger: .07, ease: 'power3.out' }) });
 
   // ---------- Compare slider ----------
