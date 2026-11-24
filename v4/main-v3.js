@@ -65,6 +65,19 @@
   // Rest frames: each scroll gesture travels to the next complete scene and stops.
   const STEPS = [0, ...chapters.map((c) => Math.min(FRAME_COUNT - 1, Number(c.dataset.frame)))];
   const STEP_COUNT = STEPS.length - 1;
+  // The portrait film has its own rest frames (data-frame-port); scroll positions stay the same,
+  // the playhead is remapped piecewise so every stop lands on that film's still frame.
+  const PORT_STEPS = [0, ...chapters.map((c) => Math.min(FRAME_COUNT - 1, Number(c.dataset.framePort || c.dataset.frame)))];
+  const toFilmFrame = (f) => {
+    if (currentKey !== 'port') return f;
+    for (let i = 0; i < STEP_COUNT; i++) {
+      if (f <= STEPS[i + 1]) {
+        const a = STEPS[i], b = STEPS[i + 1], t = b > a ? (f - a) / (b - a) : 0;
+        return PORT_STEPS[i] + t * (PORT_STEPS[i + 1] - PORT_STEPS[i]);
+      }
+    }
+    return PORT_STEPS[STEP_COUNT];
+  };
 
   const state = { frame: 0 };
   let filmST = null;
@@ -76,7 +89,7 @@
     // Large / high-density screens get 2560×1440, everything else 1920×1080 (both mastered from the 4K film)
     land: { preview: 'assets/video/film-preview.mp4?v=2',
             hd: 'assets/video/film-1080.mp4?v=2' },
-    port: { preview: 'assets/video/film-portrait-preview.mp4?v=2', hd: 'assets/video/film-portrait.mp4?v=2' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4?v=3', hd: 'assets/video/film-portrait.mp4?v=3' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
   let currentKey = pickKey();
@@ -117,7 +130,7 @@
 
   // Scrub loop: ease towards the target time, one seek at a time.
   (function loop() {
-    const target = (state.frame / (FRAME_COUNT - 1)) * duration;
+    const target = (toFilmFrame(state.frame) / (FRAME_COUNT - 1)) * duration;
     cur += (target - cur) * (reduceMotion ? 1 : 0.24);
     if (Math.abs(target - cur) < 0.002) cur = target;
     if (!video.paused && video.dataset.primed) { try { video.pause(); } catch (e) {} }
