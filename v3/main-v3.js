@@ -5,7 +5,7 @@
 (() => {
   'use strict';
 
-  const FRAME_COUNT = 190;              // frames in the source film (24 fps, ~7.9 s, Flow renovation film, no people)
+  const FRAME_COUNT = 168;              // frames in the edited film (24 fps, 7 s: static intro trimmed, cut to exterior replaced by a dissolve)
   const SEG = 10;                       // timeline units per step
 
   const root = document.documentElement;
@@ -87,8 +87,8 @@
   // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
   const FILES = {
     // Renovation film (Flow 1080p, watermark removed); portrait = centred 9:16 crop of the same film
-    land: { preview: 'assets/video/film-preview.mp4?v=7', hd: 'assets/video/film-1080.mp4?v=7' },
-    port: { preview: 'assets/video/film-portrait-preview.mp4?v=7', hd: 'assets/video/film-portrait.mp4?v=7' },
+    land: { preview: 'assets/video/film-preview.mp4?v=8', hd: 'assets/video/film-1080.mp4?v=8' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4?v=8', hd: 'assets/video/film-portrait.mp4?v=8' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
   let currentKey = pickKey();
@@ -259,14 +259,9 @@
     });
     filmST = tl.scrollTrigger;
 
-    const frameEl = $('.film__frame');
     for (let i = 0; i < STEP_COUNT; i++) {
       tl.to(state, { frame: STEPS[i + 1], duration: SEG }, i * SEG);
-      if (!reduceMotion) {
-        // a soft lean-in while walking to the next room, settling back at the scene
-        tl.to(frameEl, { scale: 1.035, duration: SEG / 2, ease: 'sine.inOut' }, i * SEG)
-          .to(frameEl, { scale: 1, duration: SEG / 2, ease: 'sine.inOut' }, i * SEG + SEG / 2);
-      }
+      // no lean-in zoom: the renovation film is shot from a locked camera, a zoom pulse reads as a jolt
     }
 
     tl.to(introSide, { autoAlpha: 0, y: -24, duration: 3 }, 0)
