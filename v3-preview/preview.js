@@ -25,7 +25,17 @@
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', whenLoaded); else whenLoaded();
 
-  /* ---------- Anfrage-Funnel (6 Schritte, wie Böllinger Design 2) ---------- */
+  /* page height changes (images loading, funnel steps) → recalc scroll triggers, so the footer wordmark always fills completely */
+  if ('ResizeObserver' in window) {
+    let lastH = 0, tid = 0;
+    new ResizeObserver(() => {
+      const hgt = document.documentElement.scrollHeight;
+      if (Math.abs(hgt - lastH) < 2 || !window.ScrollTrigger || !html.classList.contains('is-loaded')) { lastH = hgt; return; }
+      lastH = hgt; clearTimeout(tid); tid = setTimeout(() => ScrollTrigger.refresh(), 250);
+    }).observe(document.body);
+  }
+
+  /* ---------- Anfrage-Funnel (6 Schritte) ---------- */
   const f = $('#funnel');
   if (!f) return;
   const IC = {
@@ -42,12 +52,18 @@
     asap: '<path d="M13 2 4 14h7l-1 8 9-12h-7Z"/>',
     monate: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
     spaeter: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    alt: '<path d="M4 21V10l8-6 8 6v11"/><path d="M9 21v-5h6v5"/><path d="M15 6V3h3v5"/>',
+    b50: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h3"/>',
+    b78: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M13 15h3"/>',
+    neu: '<path d="M3 10 12 3l9 7v11H3z"/><path d="m9 14 2 2 4-4"/>',
+    halb: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none" opacity=".25"/><path d="M12 7v5l3 2"/>',
     info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/>',
   };
   const DATA = {
-    leistung: [['komplett', 'Komplettsanierung'], ['kern', 'Kernsanierung'], ['energie', 'Energetische Sanierung'], ['teil', 'Teilsanierung'], ['bad', 'Badsanierung'], ['sonst', 'Sonstiges / weiß ich noch nicht']],
-    objekt: [['efh', 'Einfamilienhaus'], ['mfh', 'Mehrfamilienhaus'], ['wohnung', 'Wohnung'], ['gewerbe', 'Gewerbeobjekt'], ['sonst', 'Sonstiges']],
-    zeitraum: [['asap', 'So schnell wie möglich'], ['monate', 'In den nächsten 1–3 Monaten'], ['spaeter', 'Später'], ['info', 'Ich möchte mich erst informieren']],
+    leistung: [['komplett', 'Komplettsanierung'], ['kern', 'Kernsanierung'], ['energie', 'Energetische Sanierung'], ['teil', 'Teilsanierung'], ['bad', 'Badsanierung'], ['sonst', 'Noch unklar – Beratung gewünscht']],
+    objekt: [['efh', 'Einfamilienhaus'], ['mfh', 'Zwei- / Mehrfamilienhaus'], ['wohnung', 'Eigentumswohnung'], ['gewerbe', 'Gewerbeimmobilie'], ['sonst', 'Sonstiges']],
+    baujahr: [['alt', 'Vor 1950'], ['b50', '1950 – 1977'], ['b78', '1978 – 1999'], ['neu', 'Ab 2000'], ['sonst', 'Weiß ich nicht']],
+    zeitraum: [['asap', 'So schnell wie möglich'], ['monate', 'In den nächsten 1–3 Monaten'], ['halb', 'In 3–6 Monaten'], ['info', 'Später / erst informieren']],
   };
   const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg>';
   const esc = (s) => s.replace(/&/g, '&amp;');
@@ -86,14 +102,13 @@
   function fail(msg, el) { err.textContent = msg; err.hidden = false; if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); } }
   function valid() {
     const st = fs[cur], key = st.getAttribute('data-key');
-    if (['leistung', 'objekt', 'zeitraum'].includes(key) && !checked(st)) { fail('Bitte wählen Sie eine Antwort aus.'); return false; }
+    if (['leistung', 'objekt', 'baujahr', 'zeitraum'].includes(key) && !checked(st)) { fail('Bitte wählen Sie eine Antwort aus.'); return false; }
     if (key === 'flaeche') { const fl = $('#f-flaeche'), v = parseFloat(String(fl.value).replace(',', '.')); if (!(v > 0)) { fail('Bitte geben Sie die ungefähre Größe in m² an.', fl); return false; } }
-    if (key === 'ort') { const o = $('#f-ort'); if (o.value.trim().length < 3) { fail('Bitte geben Sie PLZ und Ort an.', o); return false; } }
     if (key === 'kontakt') {
       const n = $('#f-name'), m = $('#f-mail'), t = $('#f-msg'), ok = $('#f-ok');
       if (n.value.trim().length < 2) { fail('Bitte geben Sie Ihren Namen an.', n); return false; }
+      const o = $('#f-ort'); if (o.value.trim().length < 3) { fail('Bitte geben Sie PLZ und Ort des Objekts an.', o); return false; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.value.trim())) { fail('Bitte geben Sie eine gültige E-Mail-Adresse an.', m); return false; }
-      if (t.value.trim().length < 5) { fail('Bitte beschreiben Sie kurz Ihr Vorhaben.', t); return false; }
       if (!ok.checked) { fail('Bitte stimmen Sie der Verarbeitung Ihrer Angaben zu.', ok); return false; }
     }
     return true;
@@ -117,8 +132,8 @@
     fs.forEach((s) => { const r = checked(s); if (r) d[s.getAttribute('data-key')] = r.getAttribute('data-text'); });
     const body = [
       'Name: ' + v.name.value.trim(), 'E-Mail: ' + v.email.value.trim(), 'Telefon: ' + (v.telefon.value.trim() || 'Nicht angegeben'),
-      'Leistung: ' + (d.leistung || '-'), 'Objekt: ' + (d.objekt || '-'), 'Wohnfläche: ' + (v.flaeche.value.trim() ? v.flaeche.value.trim() + ' m²' : '-'),
-      'Zeitraum: ' + (d.zeitraum || '-'), 'Objektstandort: ' + v.ort.value.trim(), '', 'Vorhaben:', v.nachricht.value.trim(),
+      'Sanierung: ' + (d.leistung || '-'), 'Objekt: ' + (d.objekt || '-'), 'Baujahr: ' + (d.baujahr || '-'), 'Wohnfläche: ' + (v.flaeche.value.trim() ? v.flaeche.value.trim() + ' m²' : '-'),
+      'Start: ' + (d.zeitraum || '-'), 'Objekt in: ' + v.ort.value.trim(), '', 'Vorhaben:', v.nachricht.value.trim() || '-',
     ].join('\n');
     const first = v.name.value.trim().split(' ')[0];
     if (first) $('#done-t').textContent = 'Vielen Dank, ' + first + '!';

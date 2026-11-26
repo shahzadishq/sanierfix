@@ -24,7 +24,7 @@
   <link rel="preload" as="image" href="../v3/assets/img/poster.jpg?v=7">
   <link rel="stylesheet" href="../css/style.css?v=v3c">
   <link rel="stylesheet" href="v3.css?v=6">
-  <link rel="stylesheet" href="preview.css?v=1">
+  <link rel="stylesheet" href="preview.css?v=2">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body class="v3">
@@ -194,7 +194,7 @@
       <!-- ============ 02 BENTO ============ -->
       <section class="x-bento pv-why" id="warum">
         <div class="x-wrap">
-          <header class="x-head pv-head-right">
+          <header class="x-head">
             <p class="x-label" data-x-reveal>Warum Sanier Fix?</p>
             <h2 class="x-title" data-x-split>Vertrauen, auf das <span class="x-grad">Sie bauen können.</span></h2>
             <span class="x-rule" data-x-reveal></span>
@@ -444,8 +444,8 @@
                 <div class="stepmeta"><span id="slabel" aria-live="polite">Schritt 1 von 6</span><b id="spct">0&nbsp;%</b></div>
 
                 <fieldset class="fs" data-key="leistung">
-                  <legend class="fq" tabindex="-1">Welche Leistung benötigen Sie?</legend>
-                  <p class="fh">Bitte wählen Sie eine Leistung aus.</p>
+                  <legend class="fq" tabindex="-1">Welche Sanierung planen Sie?</legend>
+                  <p class="fh">Wählen Sie, was am besten passt – Details klären wir im Gespräch.</p>
                   <div class="opts" id="o-leistung"></div>
                 </fieldset>
                 <fieldset class="fs" data-key="objekt" hidden>
@@ -453,30 +453,33 @@
                   <p class="fh">Eine grobe Einordnung genügt.</p>
                   <div class="opts" id="o-objekt"></div>
                 </fieldset>
+                <fieldset class="fs" data-key="baujahr" hidden>
+                  <legend class="fq" tabindex="-1">Wann wurde das Gebäude gebaut?</legend>
+                  <p class="fh">Das Baujahr hilft uns, Dämmung, Leitungen und mögliche Fördermittel (KfW / BAFA) einzuschätzen.</p>
+                  <div class="opts" id="o-baujahr"></div>
+                </fieldset>
                 <fieldset class="fs" data-key="flaeche" hidden>
-                  <legend class="fq" tabindex="-1">Wie groß ist die Wohnfläche?</legend>
-                  <p class="fh">Geben Sie die ungefähre Fläche in Quadratmetern an – ein Schätzwert genügt.</p>
+                  <legend class="fq" tabindex="-1">Wie groß ist die Wohn- bzw. Nutzfläche?</legend>
+                  <p class="fh">Ein ungefährer Wert in Quadratmetern genügt.</p>
                   <div class="ffield"><label for="f-flaeche">Fläche in m² *</label><div class="unit"><input id="f-flaeche" name="flaeche" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="z. B. 140" required><span aria-hidden="true">m²</span></div></div>
                 </fieldset>
                 <fieldset class="fs" data-key="zeitraum" hidden>
-                  <legend class="fq" tabindex="-1">Wann soll das Projekt starten?</legend>
+                  <legend class="fq" tabindex="-1">Wann soll die Sanierung starten?</legend>
                   <p class="fh">Ein unverbindlicher Richtwert reicht.</p>
                   <div class="opts" id="o-zeitraum"></div>
                 </fieldset>
-                <fieldset class="fs" data-key="ort" hidden>
-                  <legend class="fq" tabindex="-1">Wo befindet sich das Objekt?</legend>
-                  <p class="fh">So prüfen wir, ob Ihr Objekt in unserem Einsatzgebiet rund um Landau, Karlsruhe und Mannheim liegt.</p>
-                  <div class="ffield"><label for="f-ort">PLZ und Ort *</label><input id="f-ort" name="ort" type="text" autocomplete="postal-code" placeholder="z. B. 76829 Landau in der Pfalz" required></div>
-                </fieldset>
                 <fieldset class="fs" data-key="kontakt" hidden>
                   <legend class="fq" tabindex="-1">Fast geschafft – wie erreichen wir Sie?</legend>
-                  <p class="fh">Wir melden uns zeitnah und vereinbaren einen Termin für die kostenlose Erstberatung.</p>
-                  <div class="ffield"><label for="f-name">Name *</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+                  <p class="fh">Wir melden uns zeitnah und vereinbaren einen Termin für die kostenlose Erstberatung vor Ort.</p>
+                  <div class="grid2">
+                    <div class="ffield"><label for="f-name">Name *</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+                    <div class="ffield"><label for="f-ort">PLZ und Ort des Objekts *</label><input id="f-ort" name="ort" type="text" autocomplete="postal-code" placeholder="z. B. 76829 Landau" required></div>
+                  </div>
                   <div class="grid2">
                     <div class="ffield"><label for="f-mail">E-Mail *</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
                     <div class="ffield"><label for="f-tel">Telefonnummer</label><input id="f-tel" name="telefon" type="tel" autocomplete="tel"></div>
                   </div>
-                  <div class="ffield"><label for="f-msg">Nachricht *</label><textarea id="f-msg" name="nachricht" rows="3" required placeholder="Beschreiben Sie kurz Ihr Vorhaben …"></textarea></div>
+                  <div class="ffield"><label for="f-msg">Ihr Vorhaben (optional)</label><textarea id="f-msg" name="nachricht" rows="3" placeholder="z. B. Bad und Fenster erneuern, Fassade dämmen …"></textarea></div>
                   <label class="consent"><input type="checkbox" name="einwilligung" id="f-ok" required><span>Ich willige ein, dass meine Angaben zur Bearbeitung meiner Anfrage verwendet werden (<a href="https://sanier-fix.com/datenschutz/">Datenschutzerklärung</a>). *</span></label>
                   <div class="hp" aria-hidden="true"><label>Bitte leer lassen <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
                 </fieldset>
@@ -546,8 +549,8 @@
   <script src="../js/vendor/ScrollTrigger.min.js?v=3.15.1" defer></script>
   <script src="../js/vendor/Observer.min.js?v=3.15.1" defer></script>
   <script src="../js/vendor/ScrollToPlugin.min.js?v=3.15.1" defer></script>
-  <script src="preview.js?v=1" defer></script>
-  <script src="sections-v3.js?v=5" defer></script>
+  <script src="preview.js?v=2" defer></script>
+  <script src="sections-v3.js?v=6" defer></script>
   <script src="main-v3.js?v=8" defer></script>
 </body>
 </html>
