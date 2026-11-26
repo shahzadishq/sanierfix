@@ -633,6 +633,7 @@
   /* ---------- Contact form ---------- */
   function initForm() {
     const form = $('[data-form]');
+    if (!form) return;
     const status = $('[data-form-status]');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();

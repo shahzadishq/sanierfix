@@ -245,7 +245,7 @@
       if (RM) word.style.backgroundSize = '100% 100%';
       else gsap.fromTo(word, { backgroundSize: '0% 100%' }, {
         backgroundSize: '100% 100%', ease: 'none',
-        scrollTrigger: { trigger: word, start: 'top bottom', end: 'max', scrub: 0.6 },
+        scrollTrigger: { trigger: word, start: 'top bottom', end: () => ScrollTrigger.maxScroll(window), scrub: 0.6, invalidateOnRefresh: true },
       });
     }
     const y = $('[data-year]');
