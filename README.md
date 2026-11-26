@@ -63,7 +63,7 @@ Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`)
 ## V3 (renovation film) — `/v3/`
 
 Hero built around a Google Flow renovation film made from the before/after photos (`v3/assets/img/vorher.webp` → `nachher.webp`): 1920×1080, 24 fps, 190 frames, no people, Flow watermark removed with `delogo`.
-Renovation only (no new build): left half renovated → right half → camera into the open front door → back out to the finished house at dusk.
-Four scroll stops at frames 65 (half renovated), 92 (finished facade), 149 (open door / interior) and 189 (dusk) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
+Renovation only (no new build): facade renovated in daylight with all lights off → dusk, lights switch on → camera into the living room → back out to the finished house at dusk.
+Four scroll stops at frames 66 (renovated, lights off), 114 (lights on), 170 (living room) and 189 (dusk) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
 Files (all-intra H.264): `film-1080.mp4` + `film-preview.mp4` (landscape), `film-portrait.mp4` + `film-portrait-preview.mp4` (centred 9:16 crop for phones).
 V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/sections-v3.js` (manifest scrub, bento with tilt/spotlight, stacking service cards, pinned before/after scan using `v3/assets/img/vorher.webp` + `nachher.webp`, drawn process path, kinetic gallery rows, glass contact form, light-filled footer wordmark).
