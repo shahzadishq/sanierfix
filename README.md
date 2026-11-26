@@ -73,3 +73,7 @@ V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/s
 `/v3-preview/` = V3 plus: the main page's service band under the hero, the main page's three "Hauptleistung" cards (no tilt, corners stay rounded), "Warum Sanier Fix?" on the main page's navy background with the heading on the right, the main page's process timeline, and a contact section with a fixed background image and a 6-step request funnel (modelled on Böllinger design 2; sends via mailto to info@sanier-fix.com).
 `/main-preview.html` = main page with the V3 process path instead of the vertical timeline.
 Both reuse the live assets (`../v3/assets`, `assets/site`); on approval, copy the changes into `/v3/` and `/index.html`.
+
+## V3b — `/v3b/`
+
+Exact copy of V3 with a different Flow renovation film (old stone cottage → modern white house). Edited to 171 frames (static intro trimmed, the jump from the living room back outside replaced by a dissolve); stops at frames 55 (renovated), 88 (lights on), 154 (living room), 170 (finished house). Own files in `v3b/assets/video`.
