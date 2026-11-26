@@ -72,7 +72,7 @@ V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/s
 
 `/v3-preview/` = V3 plus: the main page's service band under the hero, the main page's three "Hauptleistung" cards (no tilt, corners stay rounded), "Warum Sanier Fix?" on the main page's navy background with the heading on the right, the main page's process timeline, and a contact section with a fixed background image and a 6-step request funnel (modelled on Böllinger design 2; sends via mailto to info@sanier-fix.com).
 `/main-preview.html` = main page with the V3 process path instead of the vertical timeline.
-Both reuse the live assets (`../v3/assets`, `assets/site`); on approval, copy the changes into `/v3/` and `/index.html`.
+Both reuse the live assets (`../v3/assets`, `assets/site`). The v3-preview changes are now live in `/v3/` and `/v3b/` (files `preview.css` / `preview.js` in each folder); the main-page process swap is still preview-only.
 
 ## V3b — `/v3b/`
 
