@@ -67,3 +67,9 @@ Renovation only (no new build): facade renovated in daylight with all lights off
 Edited to 168 frames (static intro trimmed, the hard cut from the living room back outside replaced by a 10-frame dissolve). Four scroll stops at frames 46 (renovated, lights off), 94 (lights on), 150 (living room) and 167 (dusk) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
 Files (all-intra H.264): `film-1080.mp4` + `film-preview.mp4` (landscape), `film-portrait.mp4` + `film-portrait-preview.mp4` (centred 9:16 crop for phones).
 V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/sections-v3.js` (manifest scrub, bento with tilt/spotlight, stacking service cards, pinned before/after scan using `v3/assets/img/vorher.webp` + `nachher.webp`, drawn process path, kinetic gallery rows, glass contact form, light-filled footer wordmark).
+
+## Previews (awaiting client approval) — `/v3-preview/` and `/main-preview.html`
+
+`/v3-preview/` = V3 plus: the main page's service band under the hero, the main page's three "Hauptleistung" cards (no tilt, corners stay rounded), "Warum Sanier Fix?" on the main page's navy background with the heading on the right, the main page's process timeline, and a contact section with a fixed background image and a 6-step request funnel (modelled on Böllinger design 2; sends via mailto to info@sanier-fix.com).
+`/main-preview.html` = main page with the V3 process path instead of the vertical timeline.
+Both reuse the live assets (`../v3/assets`, `assets/site`); on approval, copy the changes into `/v3/` and `/index.html`.
