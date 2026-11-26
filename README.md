@@ -60,9 +60,9 @@ On landscape screens the film is shown in a tall rounded frame on the right over
 Seven scenes stop at frames 48, 110, 180, 266, 310, 348 and 452 (`data-frame` in `v2/index.html`).
 Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`), `v2/main-v2.js`, `v2/assets/video/film-{preview,hd}.mp4`.
 
-## V3 (walk-through) — `/v3/`
+## V3 (renovation film) — `/v3/`
 
-Built around *Modern Residence Transformation* (4K, 198 frames), motion-interpolated to 60 fps (393 frames) so slow, cinematic scrolling stays fluid.
-Five scenes stop at frames 88, 152, 216, 270 and 392 of the 60 fps film. Each step travels 2.2–3.1 s with sine easing and a soft camera lean-in between rooms.
-Files: `v3/index.html`, `v3/main-v3.js`, `v3/assets/video/*`.
+Hero built around a Google Flow renovation film made from the before/after photos (`v3/assets/img/vorher.webp` → `nachher.webp`): 1280×720 upscaled, 24 fps, 190 frames, Flow watermark removed with `delogo`.
+Four scroll stops at frames 40 (scaffolding), 62 (new facade), 121 (living room) and 189 (finished house at dusk) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
+Files (all-intra H.264): `film-720.mp4` + `film-preview.mp4` (landscape), `film-portrait.mp4` + `film-portrait-preview.mp4` (centred 9:16 crop for phones).
 V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/sections-v3.js` (manifest scrub, bento with tilt/spotlight, stacking service cards, pinned before/after scan using `v3/assets/img/vorher.webp` + `nachher.webp`, drawn process path, kinetic gallery rows, glass contact form, light-filled footer wordmark).
