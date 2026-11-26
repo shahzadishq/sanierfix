@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Sanier Fix — V3 PREVIEW additions (loaded after v3.css)
+   1 Leistungs-Band unter dem Hero   2 Hauptleistungs-Karten (ohne Tilt)
+   3 Warum Sanier Fix: Hintergrund wie Hauptseite, Überschrift rechts
+   4 Ablauf: Timeline der Hauptseite   5 Kontakt: festes Hintergrundbild + Funnel
+   ========================================================================== */
+.v3 { --pv-r: 22px; --pv-r-lg: 32px; }
+
+/* ---------- 1 · Leistungs-Band (wie Hauptseite) ---------- */
+.v3 .marquee { position: relative; z-index: 3; overflow: hidden; background: var(--navy); color: #fff; padding: 20px 0; border-top: 1px solid var(--light-line); }
+.v3 .marquee__track { display: flex; width: max-content; gap: 0; animation: pvMarq 48s linear infinite; }
+.v3 .marquee span, .v3 .marquee__track span { display: inline-flex; align-items: center; gap: 0; padding: 0 28px; font-family: var(--sans); font-size: clamp(18px, 2vw, 26px); font-weight: 500; letter-spacing: -.01em; white-space: nowrap; color: #fff; -webkit-text-stroke: 0; }
+.v3 .marquee span::after, .v3 .marquee__track span::after { content: "✦"; width: auto; height: auto; margin-left: 56px; border-radius: 0; background: none; transform: none; color: var(--blue); font-size: .7em; }
+.v3 .marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes pvMarq { to { transform: translateX(-50%); } }
+
+/* ---------- shared: split section head ---------- */
+.pv-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(24px, 5vw, 80px); align-items: end; margin-bottom: clamp(44px, 6vw, 80px); }
+.pv-split .x-lead { margin-top: 0; }
+.pv-split .chips { margin-top: 24px; }
+@media (max-width: 900px) { .pv-split { grid-template-columns: 1fr; } }
+
+/* ---------- 2 · Hauptleistungs-Karten (Design der Hauptseite, ohne Tilt) ---------- */
+.feature-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.8vw, 26px); }
+.fcard {
+  position: relative; display: block; aspect-ratio: 3 / 4.3; border-radius: var(--pv-r-lg); overflow: hidden; isolation: isolate;
+  /* keeps the rounded corners crisp while the image zooms */
+  clip-path: inset(0 round var(--pv-r-lg)); -webkit-mask-image: -webkit-radial-gradient(white, black);
+  color: #fff; background: var(--navy-deep); box-shadow: 0 40px 70px -40px rgba(0,22,52,.7);
+  transition: box-shadow .6s var(--ease);
+}
+.fcard:hover { box-shadow: 0 46px 80px -38px rgba(0,22,52,.8); }
+.fcard__media { position: absolute; inset: 0; }
+.fcard__media img { width: 100%; height: 100%; object-fit: cover; transition: scale 1.4s var(--ease); }
+.fcard:hover .fcard__media img { scale: 1.07; }
+.fcard__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,22,52,.94) 8%, rgba(0,36,88,.35) 52%, rgba(0,22,52,.15)); }
+.fcard::before { content: "Hauptleistung"; position: absolute; right: clamp(16px, 1.8vw, 24px); top: clamp(18px, 2vw, 28px); z-index: 2; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; }
+.fcard__body { position: absolute; left: 14px; right: 14px; bottom: 14px; min-height: 52%; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: clamp(20px, 2vw, 28px); border-radius: calc(var(--pv-r-lg) - 8px); background: rgba(0,22,52,.5); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); transition: translate .7s var(--ease), background .5s, border-color .5s, box-shadow .6s; }
+.fcard:hover .fcard__body { translate: 0 -8px; background: rgba(0,36,88,.62); border-color: rgba(5,165,227,.8); box-shadow: 0 0 0 1px rgba(5,165,227,.4), 0 30px 60px -20px rgba(5,165,227,.45); }
+.fcard__num { font-family: var(--sans); font-size: clamp(34px, 3vw, 46px); font-weight: 600; letter-spacing: -.03em; line-height: 1; color: transparent; -webkit-text-stroke: 1.2px rgba(255,255,255,.85); transition: color .5s, -webkit-text-stroke-color .5s; }
+.fcard:hover .fcard__num { color: var(--blue); -webkit-text-stroke-color: var(--blue); }
+.fcard h3 { margin: 0; font-family: var(--sans); font-size: clamp(23px, 2.2vw, 32px); font-weight: 700; letter-spacing: -.025em; line-height: 1.15; min-height: 2.3em; display: flex; align-items: flex-end; color: #fff; }
+.fcard p { margin: 0; max-width: 36ch; min-height: 4.8em; color: rgba(255,255,255,.86); }
+.fcard__more { margin-top: 4px; display: inline-flex; align-items: center; gap: 12px; font-weight: 700; color: #fff; }
+.fcard__more i { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--blue); font-style: normal; transition: transform .5s var(--ease), background .4s, color .4s; }
+.fcard:hover .fcard__more i { transform: translateX(8px) rotate(-45deg); background: #fff; color: var(--navy); }
+@media (min-width: 1001px) and (max-width: 1199px) { .fcard p { min-height: 6.4em; } }
+@media (max-width: 1000px) { .feature-cards { grid-template-columns: 1fr; } .fcard { aspect-ratio: 4 / 4.4; } .fcard h3, .fcard p { min-height: 0; } }
+
+/* ---------- 3 · Warum Sanier Fix: Hintergrund der Hauptseite, Überschrift rechts ---------- */
+.pv-why { background: var(--navy-deep); overflow: hidden; isolation: isolate; }
+.pv-why::before { content: ""; position: absolute; z-index: -1; width: 60vw; height: 60vw; right: -20vw; top: -25vw; background: radial-gradient(closest-side, rgba(5,165,227,.28), transparent); pointer-events: none; }
+.pv-why .pv-head-right { margin-left: auto; text-align: right; }
+.pv-why .pv-head-right .x-rule { margin-left: auto; background: rgba(255,255,255,.35); }
+.pv-why .x-title, .pv-why .x-title .w__i { color: #fff; }
+.pv-why .x-grad, .pv-why .x-grad .w__i { color: transparent; }
+.pv-why .x-label { color: #4cc3f1; }
+.pv-why .b { box-shadow: 0 30px 60px -36px rgba(0,0,0,.6); }
+@media (max-width: 600px) { .pv-why .pv-head-right { text-align: left; margin-left: 0; } .pv-why .pv-head-right .x-rule { margin-left: 0; } }
+
+/* ---------- 4 · Ablauf: Timeline der Hauptseite ---------- */
+.pv-process { background: var(--x-bg); }
+.steps { position: relative; list-style: none; margin: 0; padding: 0 0 0 clamp(54px, 7vw, 120px); display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(26px, 4vw, 56px); max-width: 980px; }
+.steps__line { position: absolute; left: clamp(19px, 2.6vw, 33px); top: 14px; bottom: 14px; width: 2px; background: rgba(0,36,88,.1); list-style: none; }
+.steps__line i { display: block; width: 100%; height: 100%; background: linear-gradient(var(--blue), var(--navy)); transform: scaleY(0); transform-origin: 50% 0; }
+.no-anim .steps__line i { transform: none; }
+.step { position: relative; display: block; padding: clamp(22px, 3vw, 36px); border-radius: var(--pv-r); background: #fff; box-shadow: 0 1px 0 rgba(0,36,88,.1), 0 24px 50px -36px rgba(0,36,88,.4); transition: translate .7s var(--ease), box-shadow .5s; }
+.step.is-active { translate: 10px 0; box-shadow: 0 30px 70px -30px rgba(0,36,88,.45); }
+.step__num { position: absolute; left: calc(-1 * clamp(54px, 7vw, 120px) + clamp(19px, 2.6vw, 33px) - 21px); top: clamp(22px, 3vw, 36px); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid rgba(0,36,88,.1); font-size: 14px; font-weight: 700; color: var(--muted); transition: background .5s, color .5s, border-color .5s, box-shadow .5s; }
+.step.is-active .step__num { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 8px rgba(5,165,227,.18); }
+.step h3 { margin: 0 0 8px; font-family: var(--sans); font-size: clamp(21px, 2.2vw, 30px); font-weight: 700; letter-spacing: -.025em; color: var(--x-ink); }
+.step p { margin: 0; color: var(--x-dim); max-width: 56ch; }
+
+/* ---------- 5 · Kontakt: festes Hintergrundbild ---------- */
+.pv-contact { background: #001634; isolation: isolate; }
+.pv-cbg { position: absolute; inset: 0; z-index: 0; clip-path: inset(0); pointer-events: none; }
+.pv-cbg img { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; object-fit: cover; }
+.pv-cbg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(0,22,52,.95), rgba(0,36,88,.84) 55%, rgba(0,22,52,.72)); }
+.pv-contact .x-orb { display: none; }
+.pv-contact .x-contact__grid { align-items: start; }
+
+/* ---------- 5 · Funnel-Formular (wie Böllinger Design 2) ---------- */
+.fcardf { position: relative; padding: clamp(24px, 3vw, 40px); border-radius: 26px; background: #fff; color: #0b1b36; box-shadow: 0 60px 120px -50px rgba(0,0,0,.85); }
+.fk { display: inline-flex; align-items: center; gap: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-dark, #0389bd); }
+.fcardf__title { margin: 10px 0 22px; font-family: var(--sans); font-size: clamp(24px, 2.4vw, 34px); font-weight: 700; line-height: 1.12; letter-spacing: -.025em; color: #0b1b36; }
+.track { position: relative; height: 52px; margin-bottom: 6px; }
+.track .rail { position: absolute; left: 0; right: 0; bottom: 10px; height: 8px; border-radius: 4px; background: #e6edf6; overflow: hidden; }
+.track .rail i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(-45deg, #05a5e3 0 10px, #0389bd 10px 20px); transition: width .8s var(--ease); }
+.dig { position: absolute; bottom: 20px; left: 0; width: 40px; color: #002458; transition: left .8s var(--ease); }
+.dig svg { display: block; width: 40px; height: auto; }
+.stepmeta { display: flex; justify-content: space-between; margin-bottom: 22px; font-size: .95rem; font-weight: 600; color: #6a7489; }
+.stepmeta b { color: #0389bd; }
+.fs { border: 0; margin: 0; padding: 0; min-width: 0; animation: pvIn .5s var(--ease); }
+.fs[hidden] { display: none; }
+@keyframes pvIn { from { opacity: 0; transform: translateY(12px); } }
+.fq { padding: 0; margin-bottom: 6px; font-family: var(--sans); font-size: clamp(20px, 2vw, 26px); font-weight: 700; line-height: 1.2; color: #0b1b36; outline: none; }
+.fh { margin: 0 0 18px; color: #6a7489; font-size: 15px; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 12px; }
+.opt { display: flex; }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt label { flex: 1 1 auto; display: flex; align-items: center; gap: 12px; min-height: 72px; padding: 12px 14px; border: 2px solid #e1e8f1; border-radius: 16px; background: #fff; cursor: pointer; transition: border-color .25s, background-color .25s, transform .25s var(--ease), box-shadow .25s; }
+.opt label:hover { border-color: #05a5e3; transform: translateY(-2px); }
+.opt input:focus-visible + label { outline: 3px solid #05a5e3; outline-offset: 2px; }
+.opt input:checked + label { border-color: #05a5e3; background: #eef9fe; box-shadow: 0 12px 24px -16px rgba(5,165,227,.9); }
+.opt .ic { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: #eef3f9; color: #002458; transition: background-color .25s, color .25s; }
+.opt input:checked + label .ic { background: #05a5e3; color: #fff; }
+.opt .ic svg { width: 24px; height: 24px; }
+.opt .t { min-width: 0; font-weight: 700; font-size: 15px; line-height: 1.25; color: #0b1b36; overflow-wrap: anywhere; hyphens: auto; }
+.opt .ck { flex: none; display: grid; place-items: center; width: 24px; height: 24px; margin-left: auto; border-radius: 50%; background: #05a5e3; transform: scale(0); transition: transform .35s var(--ease); }
+.opt .ck svg { width: 14px; height: 14px; }
+.opt input:checked + label .ck { transform: scale(1); }
+.ffield { margin-bottom: 14px; }
+.ffield label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 14px; color: #0b1b36; }
+.ffield input, .ffield textarea { width: 100%; padding: 14px 16px; border: 2px solid #e1e8f1; border-radius: 12px; background: #fff; color: #0b1b36; font: inherit; font-size: 16px; transition: border-color .2s; }
+.ffield textarea { resize: vertical; min-height: 96px; }
+.ffield input:focus, .ffield textarea:focus { outline: none; border-color: #05a5e3; }
+.ffield [aria-invalid="true"] { border-color: #d64545; background: #fdf3f2; }
+.unit { position: relative; }
+.unit input { padding-right: 3.4rem; -moz-appearance: textfield; appearance: textfield; }
+.unit input::-webkit-outer-spin-button, .unit input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.unit span { position: absolute; right: 16px; top: 50%; translate: 0 -50%; font-weight: 700; color: #6a7489; pointer-events: none; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #4a4f58; cursor: pointer; }
+.consent input { flex: none; width: 22px; height: 22px; margin-top: 1px; accent-color: #05a5e3; }
+.consent a { color: #0389bd; text-decoration: underline; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.ferr { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: #fdf3f2; border: 1px solid #efc9c5; color: #8f2118; font-weight: 600; font-size: 14px; }
+.ferr[hidden] { display: none; }
+.fnav { display: flex; gap: 12px; justify-content: space-between; margin-top: 22px; }
+.fbtn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 54px; padding: 0 22px; border-radius: 6px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
+.fbtn svg { width: 18px; height: 18px; }
+.fbtn--ghost { background: #fff; color: #002458; border: 2px solid #e1e8f1; }
+.fbtn--ghost:hover { border-color: #002458; }
+.fbtn--ghost[hidden] { display: none; }
+.fbtn--blue { margin-left: auto; min-width: 190px; background: #05a5e3; color: #fff; border: 0; box-shadow: 0 18px 40px -20px rgba(5,165,227,.9); }
+.fbtn--blue:hover { background: #002458; }
+.done { display: grid; justify-items: center; gap: 14px; padding: 20px 0; text-align: center; animation: pvIn .6s var(--ease); }
+.done[hidden] { display: none; }
+.done .tick { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: #05a5e3; }
+.done .tick svg { width: 36px; height: 36px; stroke-dasharray: 40; stroke-dashoffset: 40; animation: pvDraw .7s .3s forwards; }
+@keyframes pvDraw { to { stroke-dashoffset: 0; } }
+.done h3 { margin: 0; font-family: var(--sans); font-size: 26px; font-weight: 700; color: #0b1b36; }
+.done p { margin: 0; max-width: 42ch; color: #4a4f58; }
+.done a { color: #0389bd; }
+.fcardf.is-done .fbody { display: none; }
+@media (max-width: 600px) {
+  .opts, .grid2 { grid-template-columns: 1fr; }
+  .opt label { min-height: 62px; }
+  .fnav .fbtn { padding: 0 16px; }
+  .fbtn--blue { flex: 1; min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .v3 .marquee__track { animation: none; } .fs, .done { animation: none; } }
+
+/* ---------- neutralise the older .fcard / .steps rules from ../css/style.css ---------- */
+.v3 .fcard::after { display: none; }
+.v3 .fcard__media { z-index: auto; }
+.v3 .fcard__media img, .v3 .fcard:hover .fcard__media img { transform: none; }
+.v3 .fcard__num { display: block; min-width: 0; height: auto; padding: 0; border-radius: 0; background: none; place-items: initial; }
+.v3 .fcard__more::after { content: none; }
+.v3 .feature-cards .fcard:last-child { grid-column: auto; }
+@media (min-width: 601px) and (max-width: 1000px) { .v3 .feature-cards .fcard:last-child { aspect-ratio: 4 / 4.4; } }
+.v3 .steps { column-gap: 0; }
+.v3 .step { grid-template-columns: none; gap: 0; border-top: 0; }
+.v3 .step__num { margin: 0; }
+
+/* funnel gets a little more room */
+.pv-contact .x-contact__grid { grid-template-columns: .9fr 1.1fr; }
+@media (max-width: 1100px) { .pv-contact .x-contact__grid { grid-template-columns: 1fr; } }
+.opt .t { hyphens: manual; overflow-wrap: break-word; }
+.pv-contact .x-title--xl { font-size: clamp(46px, 5.6vw, 96px); }
