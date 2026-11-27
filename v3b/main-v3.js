@@ -87,7 +87,7 @@
   // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
   const FILES = {
     // Renovation film (Flow 1080p, watermark removed); portrait = centred 9:16 crop of the same film
-    land: { preview: 'assets/video/film-preview.mp4?v=b12', hd: 'assets/video/film-1080.mp4?v=b12' },
+    land: { preview: 'assets/video/film-preview.mp4?v=b13', hd: 'assets/video/film-1080.mp4?v=b13' },
     port: { preview: 'assets/video/film-portrait-preview.mp4?v=b12', hd: 'assets/video/film-portrait.mp4?v=b12' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
