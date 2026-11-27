@@ -74,7 +74,7 @@ Both reuse the live assets (`../v3/assets`, `assets/site`). The v3-preview chang
 
 ## V3b — `/v3b/`
 
-Copy of V3 with a different Flow renovation film (old stone cottage → modern white house with solar roof; no people, lights on at dusk, into the living room). Edited to 201 frames (living room held, cut back outside replaced by a dissolve, watermark removed); stops at frames 72 (almost renovated, last scaffold), 122 (lights on), 176 (living room), 200 (finished house). Own files in `v3b/assets/video`.
+Copy of V3 with a different Flow renovation film (old stone cottage → modern white house with solar roof; no people, lights on at dusk, into the living room). Edited to 201 frames (living room held, cut back outside replaced by a dissolve, watermark removed); stops at frames 56 (full scaffolding, new roof), 122 (lights on), 176 (living room), 200 (finished house). Own files in `v3b/assets/video`.
 
 ## V3c — `/v3c/`
 
