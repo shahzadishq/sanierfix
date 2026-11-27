@@ -62,10 +62,8 @@ Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`)
 
 ## V3 (renovation film) — `/v3/`
 
-Hero built around a Google Flow renovation film made from the before/after photos (`v3/assets/img/vorher.webp` → `nachher.webp`): 1920×1080, 24 fps, 190 frames, no people, Flow watermark removed with `delogo`.
-Renovation only (no new build): facade renovated in daylight with all lights off → dusk, lights switch on → camera into the living room → back out to the finished house at dusk.
-Edited to 168 frames (static intro trimmed, the hard cut from the living room back outside replaced by a 10-frame dissolve). Four scroll stops at frames 46 (renovated, lights off), 94 (lights on), 150 (living room) and 167 (dusk) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
-Files (all-intra H.264): `film-1080.mp4` + `film-preview.mp4` (landscape), `film-portrait.mp4` + `film-portrait-preview.mp4` (centred 9:16 crop for phones).
+Hero film: Google Flow, 1080p, made from 16:9 versions of the before/after photos; no people, the house is renovated piece by piece in daylight with all lights off, then dusk and lights on, then the camera goes to the open front door (view into the living room) and back to the finished house. Edited to 190 frames (doorway view held, cut back outside replaced by a dissolve, Flow watermark removed). Stops at frames 63 (scaffolding), 129 (lights on), 164 (doorway / living room), 189 (finished house) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
+Files (all-intra H.264): `film-1080.mp4` + `film-preview.mp4` (1280×720), `film-portrait.mp4` + `film-portrait-preview.mp4` (centred crop for phones).
 V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/sections-v3.js` (manifest scrub, bento with tilt/spotlight, stacking service cards, pinned before/after scan using `v3/assets/img/vorher.webp` + `nachher.webp`, drawn process path, kinetic gallery rows, glass contact form, light-filled footer wordmark).
 
 ## Previews (awaiting client approval) — `/v3-preview/` and `/main-preview.html`
