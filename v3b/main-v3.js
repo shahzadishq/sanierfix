@@ -5,7 +5,7 @@
 (() => {
   'use strict';
 
-  const FRAME_COUNT = 171;              // frames in the edited film (24 fps: static intro trimmed, cut back outside replaced by a dissolve)
+  const FRAME_COUNT = 201;              // frames in the edited cottage film (24 fps; living room held, cut back outside replaced by a dissolve)
   const SEG = 10;                       // timeline units per step
 
   const root = document.documentElement;
@@ -87,8 +87,8 @@
   // Two files per orientation: a light preview (opens the site fast) and the HD film (swapped in when ready).
   const FILES = {
     // Renovation film (Flow 1080p, watermark removed); portrait = centred 9:16 crop of the same film
-    land: { preview: 'assets/video/film-preview.mp4?v=9c', hd: 'assets/video/film-1080.mp4?v=8b' },
-    port: { preview: 'assets/video/film-portrait-preview.mp4?v=8b', hd: 'assets/video/film-portrait.mp4?v=8b' },
+    land: { preview: 'assets/video/film-preview.mp4?v=b12', hd: 'assets/video/film-1080.mp4?v=b12' },
+    port: { preview: 'assets/video/film-portrait-preview.mp4?v=b12', hd: 'assets/video/film-portrait.mp4?v=b12' },
   };
   const pickKey = () => (innerHeight > innerWidth * 1.1 ? 'port' : 'land');
   let currentKey = pickKey();
