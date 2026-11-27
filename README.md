@@ -62,7 +62,7 @@ Files: `v2/index.html`, `v2/v2.css` (layout overrides on top of `css/style.css`)
 
 ## V3 (renovation film) — `/v3/`
 
-Hero film: Google Flow, 1080p, made from 16:9 versions of the before/after photos; no people, the house is renovated piece by piece in daylight with all lights off, then dusk and lights on, then the camera goes through the front door into the living room. Edited to 188 frames (living room held, the fast pull-back outside replaced by a dissolve, Flow watermark removed). Stops at frames 60 (renovation in progress), 131 (lights on), 170 (living room), 187 (finished house) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
+Hero film: Google Flow, 1080p, made from 16:9 versions of the before/after photos; no people, the house is renovated piece by piece in daylight with all lights off, then dusk and lights on, then the camera goes through the front door into the living room. Edited to 188 frames (living room held, the fast pull-back outside replaced by a dissolve, Flow watermark removed). Stops at frames 72 (renovation almost done, last scaffold), 131 (lights on), 170 (living room), 187 (finished house) — `data-frame` in `v3/index.html`, `FRAME_COUNT` in `v3/main-v3.js`.
 Files (all-intra H.264): `film-1080.mp4` + `film-preview.mp4` (1280×720), `film-portrait.mp4` + `film-portrait-preview.mp4` (centred crop for phones).
 V3 sections below the hero use their own "AI studio" design: `v3/v3.css` + `v3/sections-v3.js` (manifest scrub, bento with tilt/spotlight, stacking service cards, pinned before/after scan using `v3/assets/img/vorher.webp` + `nachher.webp`, drawn process path, kinetic gallery rows, glass contact form, light-filled footer wordmark).
 
