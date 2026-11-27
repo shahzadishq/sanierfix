@@ -77,3 +77,7 @@ Both reuse the live assets (`../v3/assets`, `assets/site`). The v3-preview chang
 ## V3b — `/v3b/`
 
 Exact copy of V3 with a different Flow renovation film (old stone cottage → modern white house). Edited to 171 frames (static intro trimmed, the jump from the living room back outside replaced by a dissolve); stops at frames 55 (renovated), 88 (lights on), 154 (living room), 170 (finished house). Own files in `v3b/assets/video`.
+
+## V3c — `/v3c/`
+
+Copy of V3 with the worker renovation film (Flow 1080p, from the 16:9 before/after images; crew on scaffolding, lights on at dusk, into the living room). Edited to 192 frames: the two hard cuts (scaffold → finished, living room → outside) are dissolves and the living room is held. Stops at 70 (workers on the scaffold), 111 (lights on), 173 (living room), 191 (finished house).
