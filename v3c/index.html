@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="../css/style.css?v=v3c">
   <link rel="stylesheet" href="v3.css?v=6">
   <link rel="stylesheet" href="preview.css?v=3">
+  <link rel="stylesheet" href="how.css?v=1">
   <style>/* show the whole house: on screens wider than 16:9 crop from the ground, never the roof */ .film__video, .film__poster { object-position: 50% 45%; }</style>
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -356,34 +357,68 @@
       </section>
 
       <!-- ============ 05 PROCESS — drawn path ============ -->
-      <section class="x-process pv-process" id="ablauf">
-        <div class="x-wrap">
-          <header class="pv-split">
-            <div>
-              <p class="x-label" data-x-reveal>So arbeiten wir</p>
-              <h2 class="x-title" data-x-split>In 4 Schritten <span class="x-grad">zur erfolgreichen Sanierung.</span></h2>
-              <span class="x-rule" data-x-reveal></span>
+      <section class="x-process hw" id="ablauf">
+        <div class="x-wrap hw__grid">
+          <div class="hw__intro">
+            <p class="x-label" data-x-reveal>So arbeiten wir</p>
+            <h2 class="hw__title" data-x-split>Ihr Weg zur <span class="x-grad">fertigen Sanierung.</span></h2>
+            <p class="hw__lead" data-x-reveal>Klare Abläufe, ein fester Ansprechpartner und volle Transparenz – von der ersten Beratung bis zur Schlüsselübergabe.</p>
+            <div class="hw__meter" aria-hidden="true">
+              <span class="hw__count"><b data-hw-now>01</b> / 04</span>
+              <span class="hw__bar"><i data-hw-bar></i></span>
             </div>
-            <p class="x-lead" data-x-reveal>Klare Abläufe, ein fester Ansprechpartner und volle Transparenz – von der Beratung bis zur Schlüsselübergabe.</p>
-          </header>
+            <a class="x-btn x-btn--brand hw__cta" href="#kontakt" data-x-reveal><span>Kostenlose Erstberatung</span><i>→</i></a>
+          </div>
 
-          <ol class="steps" data-steps>
-            <li class="steps__line" aria-hidden="true"><i data-steps-line></i></li>
-            <li class="step" data-step data-x-reveal>
-              <span class="step__num">01</span>
-              <div><h3>Professionelle Beratung</h3><p>Wir hören zu, besichtigen Ihre Immobilie und bewerten Zustand, Potenzial und Fördermöglichkeiten.</p></div>
+          <ol class="hw__steps" data-hw>
+            <li class="hw__rail" aria-hidden="true"><i data-hw-rail></i></li>
+            <li class="hw__step" data-hw-step>
+              <span class="hw__dot">01</span>
+              <div class="hw__card">
+                <div class="hw__top">
+                  <span class="hw__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12.5h5"/></svg></span>
+                  <span class="hw__tag">Schritt 1</span>
+                </div>
+                <h3>Professionelle Beratung</h3>
+                <p>Wir hören zu, besichtigen Ihre Immobilie und bewerten Zustand, Potenzial und Fördermöglichkeiten.</p>
+                <ul><li>Besichtigung vor Ort</li><li>Zustandsanalyse</li><li>Fördermöglichkeiten</li></ul>
+              </div>
             </li>
-            <li class="step" data-step data-x-reveal>
-              <span class="step__num">02</span>
-              <div><h3>Planung &amp; Analyse</h3><p>Konzept, Energieberatung und ein transparentes Angebot – abgestimmt auf Ihre Wünsche und Ihr Budget.</p></div>
+            <li class="hw__step" data-hw-step>
+              <span class="hw__dot">02</span>
+              <div class="hw__card">
+                <div class="hw__top">
+                  <span class="hw__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V4h11l5 5v11z"/><path d="M15 4v5h5M8 13h8M8 16.5h5"/></svg></span>
+                  <span class="hw__tag">Schritt 2</span>
+                </div>
+                <h3>Planung &amp; Analyse</h3>
+                <p>Konzept, Energieberatung und ein transparentes Angebot – abgestimmt auf Ihre Wünsche und Ihr Budget.</p>
+                <ul><li>Sanierungskonzept</li><li>Energieberatung</li><li>Transparentes Angebot</li></ul>
+              </div>
             </li>
-            <li class="step" data-step data-x-reveal>
-              <span class="step__num">03</span>
-              <div><h3>Fachpersonal vor Ort</h3><p>Unser eingespieltes Team setzt alle Gewerke koordiniert um – mit regelmäßigen Updates für Sie.</p></div>
+            <li class="hw__step" data-hw-step>
+              <span class="hw__dot">03</span>
+              <div class="hw__card">
+                <div class="hw__top">
+                  <span class="hw__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span>
+                  <span class="hw__tag">Schritt 3</span>
+                </div>
+                <h3>Fachpersonal vor Ort</h3>
+                <p>Unser eingespieltes Team setzt alle Gewerke koordiniert um – mit regelmäßigen Updates für Sie.</p>
+                <ul><li>Alle Gewerke koordiniert</li><li>Fester Ansprechpartner</li><li>Regelmäßige Updates</li></ul>
+              </div>
             </li>
-            <li class="step" data-step data-x-reveal>
-              <span class="step__num">04</span>
-              <div><h3>Abnahme &amp; Übergabe</h3><p>Gemeinsame Abnahme, vollständige Dokumentation und Betreuung auch nach der Übergabe.</p></div>
+            <li class="hw__step" data-hw-step>
+              <span class="hw__dot">04</span>
+              <div class="hw__card">
+                <div class="hw__top">
+                  <span class="hw__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2 2M14 9l2 2"/></svg></span>
+                  <span class="hw__tag">Schritt 4</span>
+                </div>
+                <h3>Abnahme &amp; Übergabe</h3>
+                <p>Gemeinsame Abnahme, vollständige Dokumentation und Betreuung auch nach der Übergabe.</p>
+                <ul><li>Gemeinsame Abnahme</li><li>Vollständige Dokumentation</li><li>Betreuung danach</li></ul>
+              </div>
             </li>
           </ol>
         </div>
@@ -551,6 +586,7 @@
   <script src="../js/vendor/Observer.min.js?v=3.15.1" defer></script>
   <script src="../js/vendor/ScrollToPlugin.min.js?v=3.15.1" defer></script>
   <script src="preview.js?v=2" defer></script>
+  <script src="how.js?v=1" defer></script>
   <script src="sections-v3.js?v=7" defer></script>
   <script src="main-v3.js?v=c1" defer></script>
 </body>
