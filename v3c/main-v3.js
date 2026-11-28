@@ -401,7 +401,8 @@
 
     ScrollTrigger.create({
       trigger: filmEl,
-      start: () => filmST.end + 2,
+      // turn the menu white only once the hero image has mostly scrolled away (no white flash over the dark film)
+      start: () => filmST.end + Math.round(innerHeight * 0.65),
       end: 'max',
       onToggle: (self) => { nav.classList.toggle('is-solid', self.isActive); root.classList.toggle('past-film', self.isActive); },
     });
