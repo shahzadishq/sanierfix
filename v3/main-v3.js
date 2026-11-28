@@ -187,8 +187,9 @@
   function leaveFilm(dir) {
     observer && observer.disable();
     animating = true;
-    const y = dir > 0 ? filmST.end + 2 : 0;
-    gsap.to(window, { scrollTo: { y, autoKill: false }, duration: 0.5, ease: 'power2.out', overwrite: true,
+    // one gesture after the last scene glides into the next section (no 2px nudge that needs a second scroll)
+    const y = dir > 0 ? filmST.end + Math.round(innerHeight * 0.75) : 0;
+    gsap.to(window, { scrollTo: { y, autoKill: false }, duration: reduceMotion ? 0 : 1.1, ease: 'power2.inOut', overwrite: true,
       onComplete: () => setTimeout(() => { animating = false; }, 200) });
   }
 
