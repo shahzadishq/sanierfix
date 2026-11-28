@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="../css/style.css?v=v3c">
   <link rel="stylesheet" href="v3.css?v=6">
   <link rel="stylesheet" href="preview.css?v=3">
+  <link rel="stylesheet" href="loader.css?v=1">
   <link rel="stylesheet" href="how.css?v=1">
   <style id="nav-soft">.nav{transition:transform .6s var(--ease),background .7s ease,color .7s ease,box-shadow .7s ease,padding .7s ease}.nav .nav__brand img{transition:height .7s ease}</style>
   <style>/* this film frames the house tight to the top: keep the roof in view on wide screens */ .film__video, .film__poster { object-position: 50% 50%; }</style>
@@ -34,16 +35,28 @@
 
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <!-- Preloader -->
+  <!-- Preloader: blueprint house draws itself while the film loads, then the curtain splits open -->
   <div class="loader" aria-hidden="true">
+    <div class="loader__panel loader__panel--t"></div>
+    <div class="loader__panel loader__panel--b"></div>
+    <div class="loader__grid"></div>
     <div class="loader__inner">
+      <svg class="loader__house" viewBox="0 0 240 170" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path class="ld" style="--s:0;--d:.12" pathLength="1" d="M8 152H232"/>
+        <path class="ld" style="--s:.08;--d:.3" pathLength="1" d="M50 152V84H170V152"/>
+        <path class="ld" style="--s:.3;--d:.22" pathLength="1" d="M38 86L110 30L182 86"/>
+        <path class="ld" style="--s:.46;--d:.1" pathLength="1" d="M142 58V36H158V70"/>
+        <path class="ld" style="--s:.52;--d:.12" pathLength="1" d="M98 152V114H122V152"/>
+        <path class="ld" style="--s:.6;--d:.12" pathLength="1" d="M62 98H88V122H62ZM132 98H158V122H132Z"/>
+        <path class="ld ld--b" style="--s:.68;--d:.22" pathLength="1" d="M196 152V40M214 152V40M196 62H214M196 92H214M196 122H214M196 92L214 62M196 122L214 92"/>
+        <path class="ld ld--b" style="--s:.84;--d:.16" pathLength="1" d="M14 152V120H30V152M14 136H30"/>
+      </svg>
       <img class="loader__logo" src="../assets/site/Logo_breit_L_mit-brush-1-1.webp" alt="">
-      <div class="loader__progress">
-        <svg viewBox="0 0 60 60"><circle class="loader__track" cx="30" cy="30" r="26"/><circle class="loader__ring" cx="30" cy="30" r="26" data-loader-ring/></svg>
-        <span class="loader__count"><span data-loader-count>0</span><small>%</small></span>
-      </div>
       <span class="loader__script">Deine Baustelle. Unsere Leidenschaft.</span>
+      <div class="loader__bar"><i></i></div>
     </div>
+    <div class="loader__big" aria-hidden="true"><span data-loader-count>0</span><i>%</i></div>
+    <div class="loader__label">Wir bereiten Ihr Projekt vor</div>
   </div>
 
   <!-- Navigation -->
@@ -594,6 +607,6 @@
   <script src="preview.js?v=2" defer></script>
   <script src="how.js?v=1" defer></script>
   <script src="sections-v3.js?v=7" defer></script>
-  <script src="main-v3.js?v=b16" defer></script>
+  <script src="main-v3.js?v=b16L" defer></script>
 </body>
 </html>
