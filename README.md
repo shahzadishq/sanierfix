@@ -79,3 +79,7 @@ Copy of V3 with a different Flow renovation film (old stone cottage → modern w
 ## V3c — `/v3c/`
 
 Copy of V3 with the worker renovation film (Flow 1080p, from the 16:9 before/after images; crew on scaffolding, lights on at dusk, into the living room). Edited to 192 frames: the two hard cuts (scaffold → finished, living room → outside) are dissolves and the living room is held. Stops at 70 (workers on the scaffold), 111 (lights on), 173 (living room), 191 (finished house).
+
+## V4 — `/v4/`
+
+Copy of V3 with a 5-scene renovation film (Flow 1080p, no people): scaffolding & insulation → finished facade → lights at dusk → living room → camera back outside. Edited to 200 frames (living room held, watermark removed). Five chapters at frames 33, 54, 72, 152, 199.
